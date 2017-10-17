@@ -1,0 +1,5 @@
+tipo_previsao=Holt-winters Aditivo
+series_treinamento=treinamento Vm 10m de 2013-01-01 a 2013-01-05,
+series_previsao=previsao Vm 10m de 2013-01-01 a 2013-01-05,
+nome_arquivo_previsao=previsao.prev
+nome_arquivo_modelo=modelo.model

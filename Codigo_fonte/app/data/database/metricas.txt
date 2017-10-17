@@ -1,0 +1,6 @@
+nome_tabela=database.xlsx
+orientacao=vertical
+periodo=minuto
+time_steps=10
+data_inicial=1/1/2013
+keys_array=Vm 10m,Vv 2m,Vv 50cm,Dv 10m,Ts 5cm,Ts10cm,Ts 20cm,Ts 30cm,Ts 60m,VW 30cm,VW 60cm,Tar 2m,T ar,UR,P
