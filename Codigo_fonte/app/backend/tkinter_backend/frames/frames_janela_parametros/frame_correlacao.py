@@ -1,6 +1,7 @@
 import tkinter as tk
 from ...engine import ttk
 from ...frames.frame import frame
+from ...box import show_info
 
 from .....processamento.series_temporais.processamento import processamento
 
@@ -10,33 +11,50 @@ class frame_correlacao(frame):
 
     def func_aplicar(self):
         try:
-            limite_superior=float(self.text_lim_superior.get())
-            limite_inferior=float(self.text_lim_inferior.get())
+            index_serie_1=self.box_serie_1.current()
+            index_serie_2=self.box_serie_2.current()
+            serie_1=self.series_selecionadas[index_serie_1]
+            serie_2=self.series_selecionadas[index_serie_2]
+            correlacao=serie_1.correlacao(serie_2)[0][1]
+            label_text="Correlação entre "+serie_1.text_legenda+" e "+serie_2.text_legenda+":"+str(round(correlacao,3))
             inst_processamento = processamento.instancia_selecionada
-            series_selecionadas = inst_processamento.get_series_selecionadas()
-            for serie_temporal in series_selecionadas:
-                serie_temporal.scale_serie(lim_inferior=limite_inferior,lim_superior=limite_superior)
-                serie_temporal.plot(label=serie_temporal.text_legenda)
-            self.janela.destroy()
+            inst_processamento.processamento_plot.plot_correlacao(serie_1,serie_2,label=label_text)
         except Exception as e:
             print(str(e))
 
     def iniciar_componentes(self):
         try:
-            self.label_lim_superior=tk.Label(self,text="Digite o limite superior")
-            self.label_lim_superior.pack()
-            self.text_lim_superior=tk.Entry(self)
-            self.text_lim_superior.pack()
-            self.label_lim_inferior = tk.Label(self,text="Digite o limite inferior")
-            self.label_lim_inferior.pack()
-            self.text_lim_inferior = tk.Entry(self)
-            self.text_lim_inferior.pack()
+            inst_processamento = processamento.instancia_selecionada
+            self.series_selecionadas = [serie for serie in inst_processamento.get_series_selecionadas()]
+            array_series=[]
+            if(len(self.series_selecionadas)<2):
+                show_info("Erro","Selecione mais de 1 serie",self.janela)
+                self.janela.destroy()
+            else:
+                for serie in self.series_selecionadas:
+                    array_series.append(serie.text_legenda)
 
-            self.botao_cancelar=tk.Button(self,text="Cancelar",command=lambda:self.janela.destroy())
-            self.botao_aplicar=tk.Button(self,text="Aplicar",command=self.func_aplicar)
+                self.text_serie_1=tk.Label(self,text="Primeira série")
+                self.text_serie_1.pack()
+                self.box_serie_1=ttk.Combobox(self)
+                self.box_serie_1["value"]=array_series
+                self.box_serie_1['state'] = 'readonly'
+                self.box_serie_1.current(newindex=0)
+                self.box_serie_1.pack()
 
-            self.botao_cancelar.pack()
-            self.botao_aplicar.pack()
+                self.text_serie_2 = tk.Label(self,text="Segunda série")
+                self.text_serie_2.pack()
+                self.box_serie_2 = ttk.Combobox(self)
+                self.box_serie_2["value"] = array_series
+                self.box_serie_2['state'] = 'readonly'
+                self.box_serie_2.current(newindex=1)
+                self.box_serie_2.pack()
+
+                self.botao_cancelar = tk.Button(self, text="Cancelar", command=lambda: self.janela.destroy())
+                self.botao_aplicar = tk.Button(self, text="Plotar correlação", command=self.func_aplicar)
+                self.botao_cancelar.pack()
+                self.botao_aplicar.pack()
+
         except Exception as e:
             print(str(e))
 

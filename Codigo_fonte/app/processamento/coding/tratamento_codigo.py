@@ -41,20 +41,39 @@ def buscar_simbolo_contencao(string,cont,array_objetos):
         print("buscar_simbolo_contencao")
 
 def buscar_simbolos_series(string,cont,array_objetos):
-    try:
-        soma_cont=0
-        for char_serie_key, char_serie_value in zip(SIMBOLOS_SERIES_TEMPORAIS.keys(), SIMBOLOS_SERIES_TEMPORAIS.values()):
-            if (string[cont] == char_serie_key):
-
-                for cont2 in range(cont+1, len(string)):
-                    if (string[cont2] == char_serie_value):
-                        array_objetos.append(["VALOR",string[cont:cont2+1]])
-                        soma_cont=soma_cont+(cont2-cont+1)
-                        break;
-        cont=cont+soma_cont
+    array_sub=[]
+    tam_ini=0
+    tam_fim=0
+    valor_ini=0
+    valor_fim=0
+    if(string[cont]!="["):
         return cont,array_objetos
-    except Exception as e:
-        print("buscar_simbolos_series")
+    for cont_char in range(cont,len(string)):
+        if(string[cont_char]=="["):
+            if(tam_ini==0):
+                array_sub=[]
+                array_objetos.append(["ARRAY",array_sub])
+                valor_ini=cont_char
+            tam_ini=tam_ini+1
+        elif(string[cont_char]=="]"):
+            tam_fim=tam_fim+1
+            if(tam_fim==tam_ini):
+                tam_ini=0
+                tam_fim=0
+                valor_fim=cont_char
+                if(not "[" in string[valor_ini+1:valor_fim] and not "]" in string[valor_ini+1:valor_fim]):
+                    array_sub.append(["VALOR",string[valor_ini+1:valor_fim]])
+                else:
+                    buscar_simbolos_series(string[valor_ini+1:valor_fim],0,array_sub)
+            elif(cont==len(string)-1):
+                return 0,array_objetos
+        elif(string[cont_char]==","):
+            pass
+        else:
+            pass
+
+
+    return valor_fim+1,array_objetos
 
 
 def buscar_simbolos_numericos(string,cont,array_objetos):
@@ -97,5 +116,4 @@ def buscar_simbolos_separacao(string,cont,array_objetos):
         return cont,array_objetos
     except Exception as e:
         print("buscar_simbolos_separacao")
-
 

@@ -1,11 +1,11 @@
 import tkinter as tk
 from . import objetos
+from . import tktable
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import Toplevel
 from tkinter import Frame
-
 
 
 class eventos():

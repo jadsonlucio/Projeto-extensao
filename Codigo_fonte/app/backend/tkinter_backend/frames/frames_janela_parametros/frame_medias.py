@@ -8,17 +8,20 @@ class frame_medias(frame):
     def __init__(self,janela,container):
         frame.__init__(self,janela,"frame_medias",container)
 
-    def func_aplicar(self):
+    def func_aplicar(self,**kwargs):
         try:
+
             metodo_media=self.box_tipo_localidade.get()
             repetir_valores=self.repetir_valores_var.get()
             time_steps=int(self.text_time_steps.get())
             periodo=self.periodo_dirt[self.box_periodo.get()]
             inst_processamento = processamento.instancia_selecionada
             series_selecionadas = inst_processamento.get_series_selecionadas()
+            if(metodo_media=="Percentil"):
+                kwargs["porcentagem"]=float(self.text_porcentagem.get())
             for serie in series_selecionadas:
                 periodo_convertido=int(serie.converter_tempo(periodo,time_steps))
-                serie.reshape_serie(metodo_media,periodo_convertido,repetir_valores)
+                serie.reshape_serie(metodo_media,periodo_convertido,repetir_valores,**kwargs)
                 serie.plot(label=serie.text_legenda)
         except Exception as e:
             print(str(e))
@@ -46,7 +49,7 @@ class frame_medias(frame):
             self.box_tipo_localidade.bind("<<ComboboxSelected>>", self.atualizar_frame_localidade)
 
             self.frame_params_tipo_localidade=tk.Frame(self)
-            self.frame_params_tipo_localidade.config(background="gainsboro")
+            self.frame_params_tipo_localidade.config(background="whitesmoke")
             self.frame_params_tipo_localidade.pack()
 
             self.frame_params_periodo=tk.Frame(self)

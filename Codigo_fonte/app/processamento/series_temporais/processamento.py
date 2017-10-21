@@ -7,6 +7,8 @@ from ..series_temporais.series_temporais import serie_temporal,serie_analize,ser
 from ..arquivo import abrir_arquivo,converter_array_to_dictonary,ler_array_arquivo
 from ..datas import date
 
+from ...libs import estatisticas
+
 # Variaveis globais
 instancias_processamento=[]
 
@@ -148,6 +150,15 @@ class processamento_plots():
 
     #geters e seters
 
+    def excluir_series_plot(self,**kwargs):
+        try:
+            for serie in self.processamento.series_plotadas:
+                self.excluir_plot_serie(serie,False)
+            self.processamento.series_plotadas=[]
+            self.processamento.series_selecionadas=[]
+        except Exception as e:
+            tratamento_excessao("Erro")
+
     def __init__(self,processamento):
         self.processamento=processamento
 
@@ -185,13 +196,21 @@ class processamento_plots():
         except Exception as e:
             tratamento_excessao("Erro")
 
-    def plot_correlacao(self,data_x,data_y,update_screen=True,**plot_args):
-        self.processamento.frame_plot.plot_scatter(data_x,data_y,**plot_args)
+    def plot_autocorrelacao(self,serie_temporal,tipo_plot="pacf",titulo="",alpha=0.05,lags=None,update_screen=True,**plot_args):
+        self.excluir_series_plot()
+        self.processamento.frame_plot.plot_autocorrelacao(serie_temporal.ploted_data_y,titulo,tipo_plot,lags,alpha,**plot_args)
+        if (update_screen == True):
+            self.processamento.frame_plot.update_screen()
+
+    def plot_correlacao(self,serie_1,serie_2,update_screen=True,**plot_args):
+        self.excluir_series_plot()
+        self.processamento.frame_plot.plot_scatter(serie_1.ploted_data_y,serie_2.ploted_data_y,**plot_args)
         if (update_screen == True):
             self.processamento.frame_plot.update_screen()
 
     def plot_bar(self,array_valores,update_screen=True,**plot_args):
         self.processamento.frame_plot.plot_barras()
+
 
     def excluir_plot_serie(self,serie_temporal,update_screen=True):
         try:
@@ -232,7 +251,7 @@ class processamento_plots():
                     if (self.processamento.veirificar_serie_selecionada(serie_temporal)):
                         self.processamento.series_selecionadas.remove(serie_temporal)
             else:
-                raise infoerroexception("A serie não esta plotada")
+                print("A serie não esta plotada")
             if(update_screen==True):
                 self.processamento.frame_plot.update_screen()
         except infoerroexception as e:
@@ -389,10 +408,6 @@ class operacoes_series():
             return new_serie_temporal
         except Exception as e:
             tratamento_excessao("Erro")
-
-    def auto_correlacao(self,serie_temporal,max_lag,plot=True):
-        data_x,data_y
-
 
 # Processamento geral
 

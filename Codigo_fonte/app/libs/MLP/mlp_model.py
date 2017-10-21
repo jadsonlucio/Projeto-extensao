@@ -42,7 +42,7 @@ class rede_neural():
                 if (comprimento_sazonal == None):
                     maior_autocorrelacao, comprimento_sazonal = serie_treinamento.get_best_sazonalidade()
 
-                self.comprimento_sazonal=152
+                self.comprimento_sazonal=comprimento_sazonal
                 self.comprimento_saida=comprimento_sazonal
                 self.geometry_camadas_intermediarias=[40]
 

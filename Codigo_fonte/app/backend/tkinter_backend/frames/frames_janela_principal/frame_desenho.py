@@ -209,6 +209,10 @@ class frame_estatisticas(tk.LabelFrame):
                 janela_para = janela_parametros.janela_parametros.janela_parametros(frames=None, top_level=self.janela)
                 janela_para.iniciar_componentes("AUTOCORRELACAO")
 
+            if(text=="Correlação"):
+                janela_para = janela_parametros.janela_parametros.janela_parametros(frames=None, top_level=self.janela)
+                janela_para.iniciar_componentes("CORRELACAO")
+
         except Exception as e:
             print(str(e))
 

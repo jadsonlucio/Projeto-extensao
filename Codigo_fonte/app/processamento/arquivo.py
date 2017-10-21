@@ -2,6 +2,7 @@ from os import listdir, remove, rmdir ,path,makedirs
 from shutil import copy2, rmtree
 
 from ..backend import backend_selecionado
+from codecs import open
 from .exceptions.exception import tratamento_excessao,infoerroexception
 
 
@@ -12,8 +13,8 @@ def criar_arquivo(nome_arquivo,caminho_arquivo):
     else:
         raise infoerroexception("Arquivo que já existe")
 
-def abrir_arquivo(file_url):
-    file = open(file_url, 'r+')
+def abrir_arquivo(file_url,encode="utf-8"):
+    file = open(file_url, 'r+',encode)
     return file
 
 def deletar_arquivo(url, nome_arquivo):

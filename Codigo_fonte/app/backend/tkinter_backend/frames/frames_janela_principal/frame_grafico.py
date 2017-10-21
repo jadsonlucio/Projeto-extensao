@@ -1,7 +1,9 @@
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
 from matplotlib.pyplot import style
+
 import matplotlib.dates as mdates
+import statsmodels.api as sm
 
 from .....constantes import STYLE_PYPLOT,SUBPLOT_SELECT_COLOR,SUBPLOT_NOT_SELECT_COLOR
 
@@ -171,6 +173,7 @@ class frame_plot(frame):
         frame_plot.add_instancia(self)
         self.kwargs = kwargs
         self.processamento = processamento(self)
+        self.current_plot=""
         self.botao_aba = botao_aba
 
     #raise frame
@@ -251,8 +254,9 @@ class frame_plot(frame):
         try:
             for subplot in self.figura.axes:
                 self.legendas[subplot]=subplot.legend()
-                for linha in self.legendas[subplot].get_lines():
-                    linha.set_picker(5)
+                if(self.legendas[subplot]!=None):
+                    for linha in self.legendas[subplot].get_lines():
+                        linha.set_picker(5)
         except Exception as e:
             print(str(e))
 
@@ -294,6 +298,8 @@ class frame_plot(frame):
 
     def plot_normal(self, data_x, data_y, x_label, y_label, index_axes=-1, **kwargs):
         try:
+            if(self.current_plot!="Normal"):
+                self.figura.clear()
             self.verificar_subplots()
             if(isinstance(index_axes,int)):
                 if(index_axes==-1):
@@ -305,6 +311,7 @@ class frame_plot(frame):
             line_2d,=subplot.plot(data_x,data_y,**kwargs)
             self.subplot_selecionado.set_xlabel(x_label)
             self.subplot_selecionado.set_ylabel(y_label)
+            self.current_plot="Normal"
             line_2d.set_picker(5)
             return line_2d,subplot
         except Exception as e:
@@ -313,11 +320,22 @@ class frame_plot(frame):
     def plot_bar(self,array_valores,):
         pass
 
-    def plot_scatter(self,data_x,data_y,reset_figure=True,**kwargs):
-        if(reset_figure):
+    def plot_scatter(self,data_x,data_y,**kwargs):
+        if(self.current_plot!="Scatter"):
             self.figura.clear()
             self.verificar_subplots()
-        self.subplot_selecionado.scatter(data_x,data_y,**kwargs)
+        self.subplot_selecionado.plot(data_x,data_y,'o',**kwargs)
+        self.current_plot="Scatter"
+
+    def plot_autocorrelacao(self,data_y,titulo="Autocorrelação",tipo_plot="pacf",lags=None,alpha=0.05,**kwargs):
+        if(self.current_plot!="Autocorrelação"):
+            self.figura.clear()
+            self.verificar_subplots()
+        if(tipo_plot=="pacf"):
+            sm.graphics.tsa.plot_pacf(data_y,ax=self.subplot_selecionado,title=titulo,lags=lags,alpha=alpha,**kwargs)
+        elif(tipo_plot=="acf"):
+            sm.graphics.tsa.plot_acf(data_y, ax=self.subplot_selecionado,title=titulo,lags=lags,alpha=alpha,**kwargs)
+        self.current_plot="Autocorrelação"
     #funcões eventos
 
     def on_motion(self,event):

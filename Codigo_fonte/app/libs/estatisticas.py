@@ -96,6 +96,13 @@ def variancia(array_numeros):
     except Exception as e:
         tratamento_excessao("Erro")
 
+def coeficiente_de_variação(array_numeros):
+    try:
+        return desvio_padrao(array_numeros)/media(array_numeros)
+    except Exception as e:
+        tratamento_excessao("Erro")
+
+
 # Estatistica previsao
 
 def RMSE(serie_original,serie_prevista):
@@ -110,41 +117,49 @@ def RMSE(serie_original,serie_prevista):
     except Exception as e:
         tratamento_excessao("Erro")
 
-def Autocorrelacao(array_numeros,nlags=None,**kwargs):
+def correlacao(array_x,array_y):
     try:
-        if(nlags==None):
-            nlags=len(array_numeros)
-        array_autocorrelacao=api.tsa.acf(array_numeros,**kwargs)
-        return array_autocorrelacao
+        return np.corrcoef([array_x,array_y])
     except Exception as e:
         tratamento_excessao("Erro")
 
-def Autocorrelacao_parcial(array_numeros,nlags=None,**kwargs):
+def Autocorrelacao(array_numeros,nlags=None,alpha=0.05,**kwargs):
     try:
         if(nlags==None):
             nlags=len(array_numeros)
-        array_autocorrelacao_parcial=api.tsa.pacf(array_numeros,nlags=nlags)
-        return array_autocorrelacao_parcial
+        array_autocorrelacao=api.tsa.acf(array_numeros,nlags=nlags,alpha=alpha,**kwargs)
+        return array_autocorrelacao[0]
     except Exception as e:
         tratamento_excessao("Erro")
 
-def Get_best_sazonality(array_numeros,tipo_correlacao="pacf",porcentagem_acuracia="95%"):
+def Autocorrelacao_parcial(array_numeros,nlags=None,method="ywm",alpha=0.05,**kwargs):
+    try:
+        if(nlags==None):
+            nlags=len(array_numeros)
+        array_autocorrelacao_parcial=api.tsa.pacf(array_numeros,nlags=nlags,method=method,alpha=alpha)
+        return array_autocorrelacao_parcial[0]
+    except Exception as e:
+        tratamento_excessao("Erro")
+
+def Get_best_sazonality(array_numeros,tipo_correlacao="pacf",porcentagem_acuracia=0.05):
     try:
         best_correlacao=None
         best_correlacao_index=None
         if(tipo_correlacao=="pacf"):
-            array_autocorrelacao=Autocorrelacao_parcial(array_numeros,nlags=int(len(array_numeros)/2))
+            array_autocorrelacao=Autocorrelacao_parcial(array_numeros,nlags=int(len(array_numeros)/2),alpha=porcentagem_acuracia)
         elif(tipo_correlacao=="acf"):
-            array_autocorrelacao = Autocorrelacao(array_numeros, nlags=int(len(array_numeros)/2))
-        if(porcentagem_acuracia=="95%"):
-            acuracia=1/sqrt(len(array_numeros))*2
+            array_autocorrelacao = Autocorrelacao(array_numeros, nlags=int(len(array_numeros)/2),alpha=porcentagem_acuracia)
+        if(porcentagem_acuracia==0.05):
+            acuracia=1/sqrt(len(array_numeros))
         cont=0
         for correlacao in array_autocorrelacao:
-            if(correlacao>=acuracia):
+            if(abs(correlacao)>=acuracia):
                 best_correlacao=correlacao
                 best_correlacao_index=cont
             cont=cont+1
+        print("acuracia"+str(acuracia))
         print("best_correlacao:"+str(best_correlacao)+"index:"+str(best_correlacao_index))
+
         return best_correlacao,best_correlacao_index
 
     except Exception as e:
@@ -203,3 +218,45 @@ def scale_array(array,lim_inferior,lim_superior):
         return new_array
     except Exception as e:
         print(str(e))
+
+# estatisticas de serie
+
+def criar_reletorio_histograma(array,quantidade_classes,round_value=3):
+    histograma=[]
+    classes=dividir_classe(array,quantidade_classes)
+    freq_acumulada=0
+    freq_relativa_acumulada=0
+
+    for classe in classes:
+        freq=frequencia(array, classe[0], classe[1])
+        freq_relativa=freq/len(array)
+        freq_acumulada=freq_acumulada+freq
+        freq_relativa_acumulada=freq_relativa_acumulada+freq_relativa
+        histograma.append({
+            "Classe":str(round(classe[0],round_value))+"----|"+str(round(classe[1],round_value)),
+            "Ponto Médio":round((classe[0]+classe[1])/2,round_value),
+            "Frequência":round(freq,round_value),
+            "Frequência Relativa":round(freq_relativa,round_value),
+            "Frequência Acumulada":round(freq_acumulada,2),
+            "Frequência Relativa Acumulada":round(freq_relativa_acumulada,round_value)
+        })
+    return histograma
+
+def dividir_classe(array,quantidade_classes):
+    maximo_dados=maximo(array)[0]
+    minimo_dados=minimo(array)[0]
+    amplitudade_dados=amplitude(array)
+    amplitude_classes=amplitudade_dados/quantidade_classes
+    classes=[]
+    for cont in range(quantidade_classes):
+        classes.append([minimo_dados+cont*amplitude_classes,minimo_dados+(cont+1)*amplitude_classes])
+
+    return classes
+
+def frequencia(array,valor_minimo,valor_maximo):
+    cont_frequencia=0
+    for valor in array:
+        if(valor>=valor_minimo and valor<valor_maximo):
+            cont_frequencia=cont_frequencia+1
+
+    return cont_frequencia

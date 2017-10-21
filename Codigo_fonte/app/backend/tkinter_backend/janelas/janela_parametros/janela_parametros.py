@@ -5,7 +5,7 @@ from ...engine import ttk
 from ...janelas.janela import janela
 from ...frames.frames_janela_parametros import frame_media_movel,\
                         frame_media_exponencial,frame_decomposicao,frame_scale_serie,\
-                        frame_medias
+                        frame_medias,frame_autocorrelacao,frame_correlacao
 
 class janela_parametros(janela):
     def __init__(self,frames=None,top_level=None):
@@ -38,6 +38,11 @@ class janela_parametros(janela):
             self.frame_principal.iniciar_componentes()
             self.add_frames([self.frame_principal], ["frame_principal"])
         if (tipo_parametro=="AUTOCORRELACAO"):
-            elf.frame_principal = frame_medias.frame_medias(self, self)
+            self.frame_principal = frame_autocorrelacao.frame_autocorrelacao(self, self)
             self.frame_principal.iniciar_componentes()
+            self.add_frames([self.frame_principal], ["frame_principal"])
+        if(tipo_parametro=="CORRELACAO"):
+            self.frame_principal = frame_correlacao.frame_correlacao(self, self)
+            self.frame_principal.iniciar_componentes()
+            self.add_frames([self.frame_principal], ["frame_principal"])
 

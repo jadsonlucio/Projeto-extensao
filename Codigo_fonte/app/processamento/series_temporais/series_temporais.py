@@ -90,6 +90,7 @@ class serie_temporal():
             dirt_estatisticas["Amplitude"]=round(self.amplitude(self.is_ploted),2)
             dirt_estatisticas["Variância"]=round(self.variancia(self.is_ploted),2)
             dirt_estatisticas["Desvio padrão"]=round(self.desvio_padrao(self.is_ploted),2)
+            dirt_estatisticas["Coef de variação"]=round(self.Coeficiente_de_variação(self.is_ploted),2)
 
             return dirt_estatisticas
         except Exception as e:
@@ -223,7 +224,32 @@ class serie_temporal():
         else:
             return estatisticas.desvio_padrao(self.data_y)
 
+    def Coeficiente_de_variação(self,data_ploted=True):
+        if (data_ploted):
+            return estatisticas.coeficiente_de_variação(self.ploted_data_y)
+        else:
+            return estatisticas.coeficiente_de_variação(self.data_y)
+
     # funções transformação dados
+
+    def histograma(self,quantidade_classes=None,data_ploted=True):
+        try:
+            self._histograma={}
+            if(data_ploted):
+                data_y=self.ploted_data_y
+            else:
+                data_y=self.data_y
+            if (quantidade_classes == None):
+                quantidade_classes=int(estatisticas.sqrt(len(data_y)))
+            if(isinstance(quantidade_classes,int) and quantidade_classes<len(data_y) and quantidade_classes>0):
+                self._histograma=estatisticas.criar_reletorio_histograma(data_y,quantidade_classes)
+                return self._histograma
+            else:
+                raise infoerroexception("Valor quantidade de classes incorreto")
+        except infoerroexception as e:
+            tratamento_excessao("Info")
+        except Exception as e:
+            tratamento_excessao("Erro")
 
     def regressao_linear(self,data_ploted=True):
         try:
@@ -237,6 +263,7 @@ class serie_temporal():
             return self.regressao_linear_x,self.regressao_linear_y
         except Exception as e:
             tratamento_excessao("Erro")
+
 
     def media_movel_simples(self,lag,data_ploted=True):
         try:
@@ -315,6 +342,19 @@ class serie_temporal():
         except Exception as e:
             tratamento_excessao("Erro")
 
+    def correlacao(self,serie_temporal,data_ploted=True):
+        try:
+            if(data_ploted):
+                data_x=self.ploted_data_y
+                data_y=serie_temporal.ploted_data_y
+            else:
+                data_x=self.data_y
+                data_y=serie_temporal.data_y
+
+            return estatisticas.correlacao(data_x,data_y)
+        except Exception as e:
+            tratamento_excessao("Erro")
+
     def autocorrelacao(self,termos_diferenciacoes=1,max_lag=None,data_ploted=True):
         if (data_ploted):
             serie = self.ploted_data_y
@@ -339,7 +379,7 @@ class serie_temporal():
         return self.pacf
 
     def get_best_sazonalidade(self,data_ploted=True,termos_diferenciacoes=1,max_lag=144,
-                                      tipo_correlacao="pacf",porcentagem_acuracia="95%"):
+                                      tipo_correlacao="pacf",porcentagem_acuracia=0.05):
 
         if (data_ploted):
             serie=self.ploted_data_y
@@ -464,3 +504,6 @@ class serie_previsao(serie_temporal):
         serie_temporal.__init__(self,text_legenda,data_x,data_y,date_inicial,date_final,periodo,time_steps,processamento,pai)
 
 
+
+class serie_analise_bar(serie_analize):
+    def __init__(self):

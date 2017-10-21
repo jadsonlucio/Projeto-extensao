@@ -7,6 +7,8 @@ from ..processamento import arquivo
 from ..instancias import Instancias
 from .exceptions.exception import tratamento_excessao,infoerroexception
 
+array_tabelas=[]
+
 class tabela():
     def __init__(self):
         self.arq_tabela = None
@@ -32,7 +34,7 @@ class tabela():
             if(url==None):
                 self.arq_tabela.save(CAMINHO_DATABASE + self.nome_tabela)
             else:
-                self.arq_tabela.save(url + self.nome_tabela)
+                self.arq_tabela.save(url)
         except Exception as e:
             tratamento_excessao(type_exception='Erro')
 
@@ -174,6 +176,10 @@ class database(tabela):
             tratamento_excessao(type_exception='Erro')
             return 0
 
+def criar_tabela():
+    tab=tabela()
+    array_tabelas.append(tab)
+    return tab
 
 def criar_instancia_database():
     inst_database=database('orizontal', 'minuto', 10, datas.date(day=1, month=1, year=2013), [])

@@ -102,27 +102,7 @@ def semantica_analise(array_objetos):
                     cont_2=cont_2+1
         if(cont_1!=cont_2):
             return "Numero parênteses incorreto"
-        if(array_resultados[0]=="ARITMETICO"):
-            return "Inicio de formula incorreta"
-        for cont in range(0,len(array_objetos)-1):
-            if(array_resultados[cont]=="VALOR" and array_resultados[cont+1]=="CONTENCAO"):
-                if(array_objetos[cont]=="("):
-                    return "Operação invalida"
-            if(array_resultados[cont]=="CONTENCAO" and array_resultados[cont+1]=="ARITMETICO"):
-                if (array_objetos[cont] == "("):
-                    return "Operação invalida"
-            if(array_resultados[cont]=="FUNCAO" and array_resultados[cont+1]=='{'):
-                return "Uma Função precisa ser seguida de parenteses"
-            if(array_resultados[cont]=="ARITMETICO" and array_resultados[cont+1]=="ARITMETICO"):
-                return "Duas operações aritmeticas não podem ficar juntas"
-            if(array_resultados[cont]=="CONTENCAO" and array_resultados[cont+1]=="CONTENCAO"):
-                return "Operação invalida"
-            if(array_resultados[cont]=="SEPARACAO" and array_resultados[cont+1]=="SEPARACAO"):
-                return "Duas virgulas juntas"
-            if(array_resultados[cont]=="VALOR" and array_resultados[cont+1]=="VALOR"):
-                return "Operação invalida"
-            if(array_resultados[cont]=="FUNCAO" and array_resultados[cont+1]=="FUNCAO"):
-                return "Operação invalida"
+
 
         return array_objetos
     except Exception as e:
@@ -141,13 +121,27 @@ def tratar_codigo(string):
 
 def tratar_objetos(array_objetos):
     try:
-        pass
+        for cont_objetos in range(0,len(array_objetos)):
+            if(array_objetos[cont_objetos][0]=="ARRAY"):
+                tratar_array(array_objetos[cont_objetos][1])
     except Exception as e:
         return 0
 
-def tratar_serie(string,array_objetos):
+def tratar_array(array):
     try:
-        pass
-        return array_objetos
+        for obj in array:
+            if(obj[0]=="ARRAY"):
+                tratar_array(obj[1])
+            elif(obj[0]=="VALOR"):
+                objeto=tratar_array_text(obj[1])
     except Exception as e:
         return 0
+
+def tratar_array_text(string):
+    resultado=None
+    if("," in string):
+        array_string=string.split(",")
+        for text in array_string:
+            pass
+    else:
+        pass
