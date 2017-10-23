@@ -13,6 +13,15 @@ def media(array_numeros):
     except Exception as e:
         tratamento_excessao('Erro')
 
+def media_geometrica(array_numero):
+    try:
+        multiplicacao=1
+        for valor in array_numero:
+            multiplicacao=multiplicacao*valor
+        return pow(multiplicacao,1/len(array_numero))
+    except Exception as e:
+        tratamento_excessao("Erro")
+
 def mediana(array_numeros):
     try:
         return median(array_numeros)
@@ -218,6 +227,23 @@ def scale_array(array,lim_inferior,lim_superior):
         return new_array
     except Exception as e:
         print(str(e))
+
+def standardize_array(array, mean_array=None, desvio_padrao_array=None):
+    try:
+        print(array)
+        new_array = []
+        _media = media(array)
+        _desvio_padrao = desvio_padrao(array)
+        if (mean_array == None):
+            mean_array = media(array)
+        if (desvio_padrao_array == None):
+            desvio_padrao_array = 1
+        for valor in array:
+            new_value = (valor - (_media - mean_array)) / (_desvio_padrao / desvio_padrao_array)
+            new_array.append(new_value)
+        return new_array
+    except Exception as e:
+        tratamento_excessao("Erro")
 
 # estatisticas de serie
 

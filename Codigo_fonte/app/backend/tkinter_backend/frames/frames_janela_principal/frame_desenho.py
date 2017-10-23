@@ -146,7 +146,7 @@ class frame_estatisticas(tk.LabelFrame):
 
             self.opcoes_indicadores_estatisticas = ["Regressão Linear", "Média Móvel Simples" , "Variação",
                                                     "Média Móvel Exponencial","Decomposição da Série"]
-            self.opcoes_indicadores_funcoes = ["Escalar serie","Gráfico de médias","Autocorrelação", "Correlação",]
+            self.opcoes_indicadores_funcoes = ["Normalizar serie","Gráfico de médias","Autocorrelação", "Correlação","Histograma"]
 
 
             self.frame_estatistiscas = tk.Frame(self)
@@ -197,9 +197,9 @@ class frame_estatisticas(tk.LabelFrame):
                 janela_para=janela_parametros.janela_parametros.janela_parametros(frames=None,top_level=self.janela)
                 janela_para.iniciar_componentes("DECOMPOSICAO")
 
-            if(text=="Escalar serie"):
+            if(text=="Normalizar serie"):
                 janela_para=janela_parametros.janela_parametros.janela_parametros(frames=None,top_level=self.janela)
-                janela_para.iniciar_componentes("SCALE")
+                janela_para.iniciar_componentes("NORMALIZAR")
 
             if(text=="Gráfico de médias"):
                 janela_para=janela_parametros.janela_parametros.janela_parametros(frames=None,top_level=self.janela)
@@ -212,6 +212,10 @@ class frame_estatisticas(tk.LabelFrame):
             if(text=="Correlação"):
                 janela_para = janela_parametros.janela_parametros.janela_parametros(frames=None, top_level=self.janela)
                 janela_para.iniciar_componentes("CORRELACAO")
+
+            if(text=="Histograma"):
+                janela_para = janela_parametros.janela_parametros.janela_parametros(frames=None, top_level=self.janela)
+                janela_para.iniciar_componentes("HISTOGRAMA")
 
         except Exception as e:
             print(str(e))

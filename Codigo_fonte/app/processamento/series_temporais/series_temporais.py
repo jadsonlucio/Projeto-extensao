@@ -406,6 +406,13 @@ class serie_temporal():
         except Exception as e:
             tratamento_excessao("Erro")
 
+    def standardize_serie(self,media,desvio_padrao,data_ploted=True):
+        if (data_ploted):
+            data_y = self.ploted_data_y
+        else:
+            data_y = self.data_y
+        self.ploted_data_y = estatisticas.standardize_array(data_y,media,desvio_padrao)
+
     def reshape_serie(self,metodo_media,tam_intervalo,repetir_valores=False,data_ploted=True,**kwargs):
         try:
             if(data_ploted):
@@ -483,19 +490,16 @@ class serie_temporal():
         return self.processamento.operacoes_series.dividir_series(self, other)
 
 class serie_analize():
-    def __init__(self,tipo_serie,text_legenda,data_x, data_y, date_inicial, date_final,processamento,pai=None):
+    def __init__(self,tipo_serie,text_legenda,data_x,data_y,processamento,serie_temporal):
         self.tipo_serie=tipo_serie
         self.text_legenda=text_legenda
         self.data_x=data_x
         self.data_y=data_y
-        self.data_inicial=date_inicial
-        self.data_final=date_final
         self.processamento=processamento
-        self.pai=pai
+        self.pai=serie_temporal
 
     def plot(self,index_window=None):
-        if(self.tipo_serie=="bar"):
-            pass
+        pass
 
 class serie_previsao(serie_temporal):
     def __init__(self,previsao,text_legenda,data_x, data_y, date_inicial,
@@ -505,5 +509,10 @@ class serie_previsao(serie_temporal):
 
 
 
-class serie_analise_bar(serie_analize):
-    def __init__(self):
+class serie_analise_histograma(serie_analize):
+
+    def __init__(self,text_classes,text_legenda,quant_classes,valor_maximo,valor_minimo,data_x,data_y,processamento,pai):
+        serie_analize.__init__(self,"Histograma",text_legenda,data_x,data_y,processamento,pai)
+        self.text_classes=text_classes
+    def plot(self,index_window=None):
+        pass

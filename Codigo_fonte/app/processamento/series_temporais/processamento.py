@@ -208,8 +208,11 @@ class processamento_plots():
         if (update_screen == True):
             self.processamento.frame_plot.update_screen()
 
-    def plot_bar(self,array_valores,update_screen=True,**plot_args):
-        self.processamento.frame_plot.plot_barras()
+    def plot_histograma(self,serie_temporal,quantidade_classes,normalizar_dados=False,update_screen=True,**plot_args):
+        text_label="Histograma "+serie_temporal.text_legenda
+        self.processamento.frame_plot.plot_histograma(serie_temporal.ploted_data_y,quantidade_classes,normalizar_dados,label=text_label)
+        if (update_screen == True):
+            self.processamento.frame_plot.update_screen()
 
 
     def excluir_plot_serie(self,serie_temporal,update_screen=True):

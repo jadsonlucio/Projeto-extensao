@@ -5,3 +5,4 @@ from . import frame_scale_serie
 from . import frame_medias
 from . import frame_autocorrelacao
 from . import frame_correlacao
+from . import frame_histograma

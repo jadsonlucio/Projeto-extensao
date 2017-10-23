@@ -151,17 +151,6 @@ class frame_info_serie(frame):
         self.janela=janela
         self.container=container
 
-    def func_teste2(self):
-        histograma=self.serie_selecionada.histograma(20)
-        data_rows=[]
-        data_rows.append([key for key in histograma[0].keys()])
-        for hist in histograma:
-            data_rows.append([value for value in hist.values()])
-        janela=janela_tabela(None,self.janela.top_level)
-        janela.iniciar_componentes()
-        janela.frame_janela_tabela.tabela.criar_tabela("teste")
-        janela.frame_janela_tabela.set_tabela_data(0,data_rows)
-        janela.frame_janela_tabela.iniciar_componentes()
 
     def load_serie(self,serie_temporal):
         try:
@@ -176,9 +165,6 @@ class frame_info_serie(frame):
             self.frame_informacoes.informacoes=informacoes
             self.frame_informacoes.create_frames()
             self.focus_force()
-
-            self.botao_teste=tk.Button(self,text="click",command=self.func_teste2)
-            self.botao_teste.pack()
 
             self.bind("<Key>",self.key_event)
 
@@ -199,8 +185,10 @@ class frame_info_serie(frame):
             self.botao_estatisticas_serie=tk.Button(self,text="Estatísticas da Série",command=self.func_estatisticas_serie)
             self.botao_tabela_frequencia=tk.Button(self,text="Tabela frequência",command=self.func_janela_frequencia)
 
-            self.botao_plotar_serie.place(relx=0.05,rely=0.75,relwidth=0.4,relheight=0.25)
-            self.botao_estatisticas_serie.place(relx=0.55, rely=0.75, relwidth=0.4, relheight=0.25)
+            self.botao_plotar_serie.place(relx=0,rely=0.50,relwidth=0.5,relheight=0.25)
+            self.botao_estatisticas_serie.place(relx=0.50, rely=0.50, relwidth=0.5, relheight=0.25)
+            self.botao_tabela_frequencia.place(relx=0, rely=0.75, relwidth=0.5, relheight=0.25)
+
 
         except Exception as e:
             print(str(e))
@@ -224,7 +212,16 @@ class frame_info_serie(frame):
             print(str(e))
 
     def func_janela_frequencia(self):
-        pass
+        histograma=self.serie_selecionada.histograma(20)
+        data_rows=[]
+        data_rows.append([key for key in histograma[0].keys()])
+        for hist in histograma:
+            data_rows.append([value for value in hist.values()])
+        janela=janela_tabela(None,self.janela.top_level)
+        janela.iniciar_componentes()
+        janela.frame_janela_tabela.tabela.criar_tabela("teste")
+        janela.frame_janela_tabela.set_tabela_data(0,data_rows)
+        janela.frame_janela_tabela.iniciar_componentes()
 
     def func_ir_tela_series(self):
         try:

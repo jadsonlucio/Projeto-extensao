@@ -2,6 +2,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 from matplotlib.pyplot import style
 
+import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import statsmodels.api as sm
 
@@ -274,7 +275,7 @@ class frame_plot(frame):
 
     def update_subplots(self):
         for subplot in self.figura.axes:
-            if(len(subplot.lines)==0):
+            if(len(subplot.lines)==0 and self.current_plot=="Normal"):
                 self.excluir_subplot(subplot)
         quant_subplots = len(self.figura.axes)
         cont_subplot = 1
@@ -317,7 +318,7 @@ class frame_plot(frame):
         except Exception as e:
             print(str(e))
 
-    def plot_bar(self,array_valores,):
+    def plot_bar(self,array_valores,array_text):
         pass
 
     def plot_scatter(self,data_x,data_y,**kwargs):
@@ -326,6 +327,17 @@ class frame_plot(frame):
             self.verificar_subplots()
         self.subplot_selecionado.plot(data_x,data_y,'o',**kwargs)
         self.current_plot="Scatter"
+
+    def plot_histograma(self,array_valores,quantidade_classes,normed=False,**kwargs):
+        try:
+            if (self.current_plot != "Histogram"):
+                self.figura.clear()
+                self.verificar_subplots()
+            self.subplot_selecionado.hist(array_valores,quantidade_classes,normed=normed,**kwargs)
+            self.update_canvas()
+            self.current_plot="Histogram"
+        except Exception as e:
+            print(str(e))
 
     def plot_autocorrelacao(self,data_y,titulo="Autocorrelação",tipo_plot="pacf",lags=None,alpha=0.05,**kwargs):
         if(self.current_plot!="Autocorrelação"):
@@ -336,6 +348,7 @@ class frame_plot(frame):
         elif(tipo_plot=="acf"):
             sm.graphics.tsa.plot_acf(data_y, ax=self.subplot_selecionado,title=titulo,lags=lags,alpha=alpha,**kwargs)
         self.current_plot="Autocorrelação"
+
     #funcões eventos
 
     def on_motion(self,event):
