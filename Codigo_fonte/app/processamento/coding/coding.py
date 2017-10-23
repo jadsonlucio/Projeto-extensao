@@ -46,6 +46,10 @@ def decode_code(string):
             array_objetos=sintaxe_analise(codigo_tratado)
         else:
             return "Nenhum texto digitado"
+        if(isinstance(array_objetos,list)):
+            tratar_objetos(array_objetos)
+        else:
+            return array_objetos
         return array_objetos
     except Exception as e:
         return 0
@@ -139,9 +143,10 @@ def tratar_array(array):
 
 def tratar_array_text(string):
     resultado=None
+    print(string)
     if("," in string):
         array_string=string.split(",")
         for text in array_string:
-            pass
+            print(text)
     else:
         pass

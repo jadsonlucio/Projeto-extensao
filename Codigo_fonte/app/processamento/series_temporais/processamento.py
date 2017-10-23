@@ -196,6 +196,15 @@ class processamento_plots():
         except Exception as e:
             tratamento_excessao("Erro")
 
+    def box_plot(self,serie_temporal,periodo,time_steps,update_screen=True,**plot_args):
+        try:
+            data=serie_temporal.reshape_periodo(periodo,time_steps)
+            self.processamento.frame_plot.box_plot(data)
+            if (update_screen == True):
+                self.processamento.frame_plot.update_screen()
+        except Exception as e:
+            tratamento_excessao("Erro")
+
     def plot_autocorrelacao(self,serie_temporal,tipo_plot="pacf",titulo="",alpha=0.05,lags=None,update_screen=True,**plot_args):
         self.excluir_series_plot()
         self.processamento.frame_plot.plot_autocorrelacao(serie_temporal.ploted_data_y,titulo,tipo_plot,lags,alpha,**plot_args)

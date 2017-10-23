@@ -5,7 +5,7 @@ from ...engine import ttk
 from ...janelas.janela import janela
 from ...frames.frames_janela_parametros import frame_media_movel,\
                         frame_media_exponencial,frame_decomposicao,frame_normalise_serie,\
-                        frame_medias,frame_autocorrelacao,frame_correlacao,frame_histograma
+                        frame_medias,frame_autocorrelacao,frame_correlacao,frame_histograma,frame_boxplot
 
 
 class janela_parametros(janela):
@@ -29,6 +29,10 @@ class janela_parametros(janela):
             self.add_frames([self.frame_principal], ["frame_principal"])
         if (tipo_parametro=="DECOMPOSICAO"):
             self.frame_principal = frame_decomposicao.frame_decomposicao(self, self)
+            self.frame_principal.iniciar_componentes()
+            self.add_frames([self.frame_principal], ["frame_principal"])
+        if(tipo_parametro=="BOXPLOT"):
+            self.frame_principal = frame_boxplot.frame_boxplot(self, self)
             self.frame_principal.iniciar_componentes()
             self.add_frames([self.frame_principal], ["frame_principal"])
         if (tipo_parametro=="NORMALIZAR"):

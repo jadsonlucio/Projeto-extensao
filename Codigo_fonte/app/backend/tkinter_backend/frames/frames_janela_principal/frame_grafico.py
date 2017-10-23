@@ -3,6 +3,7 @@ from matplotlib.figure import Figure
 from matplotlib.pyplot import style
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 import matplotlib.dates as mdates
 import statsmodels.api as sm
 
@@ -315,6 +316,16 @@ class frame_plot(frame):
             self.current_plot="Normal"
             line_2d.set_picker(5)
             return line_2d,subplot
+        except Exception as e:
+            print(str(e))
+
+    def box_plot(self,data,**kwargs):
+        try:
+            if(self.current_plot!="Normal"):
+                self.figura.clear()
+            self.verificar_subplots()
+            sns.barplot(data=data,ax=self.subplot_selecionado,**kwargs)
+            self.current_plot="Normal"
         except Exception as e:
             print(str(e))
 

@@ -427,6 +427,16 @@ class serie_temporal():
         except Exception as e:
             tratamento_excessao("Erro")
 
+    def reshape_periodo(self,periodo,time_steps,data_ploted=True):
+        if(data_ploted):
+            data_y=self.ploted_data_y
+        else:
+            data_y=self.data_y
+
+        novo_periodo=self.converter_tempo("minuto",60)
+        print(novo_periodo)
+        return estatisticas.reshape_array(data_y,None,int(novo_periodo))
+
     # função criar menu
 
     def criar_menu(self):

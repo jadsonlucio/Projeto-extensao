@@ -145,7 +145,7 @@ class frame_estatisticas(tk.LabelFrame):
             self.text_volta_inicio.config(foreground="black", background="gainsboro")
 
             self.opcoes_indicadores_estatisticas = ["Regressão Linear", "Média Móvel Simples" , "Variação",
-                                                    "Média Móvel Exponencial","Decomposição da Série"]
+                                                    "Média Móvel Exponencial","Decomposição da Série","Boxplot"]
             self.opcoes_indicadores_funcoes = ["Normalizar serie","Gráfico de médias","Autocorrelação", "Correlação","Histograma"]
 
 
@@ -192,6 +192,9 @@ class frame_estatisticas(tk.LabelFrame):
             if(text=="Média Móvel Exponencial"):
                 janela_para=janela_parametros.janela_parametros.janela_parametros(frames=None,top_level=self.janela)
                 janela_para.iniciar_componentes("MME")
+            if(text=="Boxplot"):
+                janela_para=janela_parametros.janela_parametros.janela_parametros(frames=None,top_level=self.janela)
+                janela_para.iniciar_componentes("BOXPLOT")
 
             if(text=="Decomposição da Série"):
                 janela_para=janela_parametros.janela_parametros.janela_parametros(frames=None,top_level=self.janela)
