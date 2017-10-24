@@ -4,6 +4,7 @@ from ...frames.frame import frame
 from ...box import show_info
 
 from .....processamento.series_temporais.processamento import processamento
+from .....libs.regressao.OLS_model import OLS
 
 class frame_correlacao(frame):
     def __init__(self,janela,container):
@@ -19,6 +20,10 @@ class frame_correlacao(frame):
             label_text="Correlação entre "+serie_1.text_legenda+" e "+serie_2.text_legenda+":"+str(round(correlacao,3))
             inst_processamento = processamento.instancia_selecionada
             inst_processamento.processamento_plot.plot_correlacao(serie_1,serie_2,label=label_text)
+
+            model=OLS(self.series_selecionadas[:-1],self.series_selecionadas[-1],self.series_selecionadas[-1])
+            model.fit_model(self.series_selecionadas[-1])
+            print(model.get_informacoes()["r quadrado"])
         except Exception as e:
             print(str(e))
 

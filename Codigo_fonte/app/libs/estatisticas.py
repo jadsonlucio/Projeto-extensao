@@ -204,7 +204,10 @@ def agrupar_array(array,tamanho):
     return [array[cont:cont+tamanho] for cont in range(0,len(array),tamanho)]
 
 def inverter_shape_array_2d(array):
-    return array.reshape(array.shape[1],array.shape[0])
+    array=np.array(array)
+    array_shape=array.shape
+    array=array.reshape(-1)
+    return array.reshape(array_shape[1],array_shape[0])
 
 #funções series temporais
 

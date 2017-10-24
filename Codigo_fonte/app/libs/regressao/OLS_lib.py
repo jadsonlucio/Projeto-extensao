@@ -1,7 +1,7 @@
 import pickle
 import statsmodels.api as sm
 
-from ..estatisticas import Dimencionar_arrays
+from ..estatisticas import Dimencionar_arrays,inverter_shape_array_2d
 
 def predict(model_fit,array):
     try:
@@ -10,13 +10,18 @@ def predict(model_fit,array):
         print(str(e))
 
 def fit_model(train_array,prev_array,**kwargs):
-    array_dimencionado=Dimencionar_arrays(train_array.append(prev_array))
-    train_array=array_dimencionado[:-1]
-    prev_array=array_dimencionado[-1]
-    model=sm.OLS(prev_array,train_array,**kwargs)
-    model_fit=model.fit()
+    try:
+        train_array.append(prev_array)
+        print(len(train_array))
+        array_dimencionado=Dimencionar_arrays(train_array)
+        prev_array=array_dimencionado[-1]
+        train_array=inverter_shape_array_2d(array_dimencionado[:-1])
+        model=sm.OLS(prev_array,train_array)
+        model_fit=model.fit()
 
-    return model_fit
+        return model_fit
+    except Exception as e:
+        print(str(e))
 
 def get_propriedades_modelo(model_fit):
     dict_propriedades={
