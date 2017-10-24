@@ -22,10 +22,9 @@ class OLS():
         except Exception as e:
             tratamento_excessao("Erro")
 
-    def __init__(self,series_treinamento,series_previsao,serie_treinamento,model_fit=None):
+    def __init__(self,series_treinamento,serie_treinamento,model_fit=None):
         self.series_treinamento=series_treinamento
         self.serie_treinamento=serie_treinamento
-        self.series_previsao=series_previsao
         self.model_fit=model_fit
         if(model_fit!=None):
             self.model_fited=True
@@ -34,12 +33,11 @@ class OLS():
 
     def fit_model(self,serie_treinamento=None,**kwargs):
             try:
-                if (serie_treinamento != None):
-                    self.serie_previsao = serie_treinamento
+
 
                 array_series_treinamento=[serie.ploted_data_y for serie in self.series_treinamento]
-                array_serie_previsao=serie_treinamento.ploted_data_y
-                self.model_fit=OLS_lib.fit_model(array_series_treinamento,array_serie_previsao,**kwargs)
+                array_serie_treinamento=serie_treinamento.ploted_data_y
+                self.model_fit=OLS_lib.fit_model(array_series_treinamento,array_serie_treinamento,**kwargs)
                 self.model_fited=True
             except Exception as e:
                 tratamento_excessao("Erro")

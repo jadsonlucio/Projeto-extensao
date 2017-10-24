@@ -10,7 +10,7 @@ class frame_correlacao(frame):
     def __init__(self,janela,container):
         frame.__init__(self,janela,"frame_correlacao",container)
 
-    def func_aplicar(self):
+    def func_plot_correlacao(self):
         try:
             index_serie_1=self.box_serie_1.current()
             index_serie_2=self.box_serie_2.current()
@@ -20,10 +20,14 @@ class frame_correlacao(frame):
             label_text="Correlação entre "+serie_1.text_legenda+" e "+serie_2.text_legenda+":"+str(round(correlacao,3))
             inst_processamento = processamento.instancia_selecionada
             inst_processamento.processamento_plot.plot_correlacao(serie_1,serie_2,label=label_text)
+        except Exception as e:
+            print(str(e))
 
-            model=OLS(self.series_selecionadas[:-1],self.series_selecionadas[-1],self.series_selecionadas[-1])
-            model.fit_model(self.series_selecionadas[-1])
-            print(model.get_informacoes()["r quadrado"])
+    def func_criar_tabela_correlacao(self):
+        try:
+            array_models=[]
+            for serie in self.series_selecionadas:
+                pass
         except Exception as e:
             print(str(e))
 
@@ -55,11 +59,11 @@ class frame_correlacao(frame):
                 self.box_serie_2.current(newindex=1)
                 self.box_serie_2.pack()
 
-                self.botao_cancelar = tk.Button(self, text="Cancelar", command=lambda: self.janela.destroy())
-                self.botao_aplicar = tk.Button(self, text="Plotar correlação", command=self.func_aplicar)
-                self.botao_cancelar.pack()
-                self.botao_aplicar.pack()
+                self.botao_plot_correlacao = tk.Button(self, text="Plotar correlação", command=self.func_plot_correlacao)
+                self.botao_plot_correlacao.pack(anchor=tk.E)
 
+                self.botao_criar_tabela=tk.Button(self,text="Tabela de correlacão multipla")
+                self.botao_criar_tabela.pack()
         except Exception as e:
             print(str(e))
 
