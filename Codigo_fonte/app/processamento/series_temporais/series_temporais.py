@@ -433,9 +433,8 @@ class serie_temporal():
         else:
             data_y=self.data_y
 
-        novo_periodo=self.converter_tempo("minuto",60)
-        print(novo_periodo)
-        return estatisticas.reshape_array(data_y,None,int(novo_periodo))
+        novo_periodo=self.converter_tempo(periodo,time_steps)
+        return estatisticas.agrupar_array(data_y,int(novo_periodo))
 
     # função criar menu
 

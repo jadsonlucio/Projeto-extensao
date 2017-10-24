@@ -198,6 +198,7 @@ class processamento_plots():
 
     def box_plot(self,serie_temporal,periodo,time_steps,update_screen=True,**plot_args):
         try:
+            self.excluir_series_plot()
             data=serie_temporal.reshape_periodo(periodo,time_steps)
             self.processamento.frame_plot.box_plot(data)
             if (update_screen == True):

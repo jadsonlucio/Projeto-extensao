@@ -3,7 +3,6 @@ from matplotlib.figure import Figure
 from matplotlib.pyplot import style
 
 import matplotlib.pyplot as plt
-import seaborn as sns
 import matplotlib.dates as mdates
 import statsmodels.api as sm
 
@@ -255,7 +254,8 @@ class frame_plot(frame):
     def update_legenda(self, *args, **kwargs):
         try:
             for subplot in self.figura.axes:
-                self.legendas[subplot]=subplot.legend()
+                handles,labels=subplot.get_legend_handles_labels()
+                self.legendas[subplot]=subplot.legend(handles,labels)
                 if(self.legendas[subplot]!=None):
                     for linha in self.legendas[subplot].get_lines():
                         linha.set_picker(5)
@@ -321,11 +321,11 @@ class frame_plot(frame):
 
     def box_plot(self,data,**kwargs):
         try:
-            if(self.current_plot!="Normal"):
+            if(self.current_plot!="Boxplot"):
                 self.figura.clear()
             self.verificar_subplots()
-            sns.barplot(data=data,ax=self.subplot_selecionado,**kwargs)
-            self.current_plot="Normal"
+            self.subplot_selecionado.boxplot(data,**kwargs)
+            self.current_plot="Boxplot"
         except Exception as e:
             print(str(e))
 

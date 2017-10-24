@@ -199,16 +199,12 @@ def Agrupar_arrays(arrays):
             cont_valor = cont_valor + 1
     return new_array
 
-def reshape_array(array,tamanho_x,tamanho_y):
-    tamanho_array=len(array)
-    if(tamanho_x==None):
-        tamanho_x=tamanho_array//tamanho_y
-        array = array[:tamanho_array - tamanho_array%tamanho_y]
-    if(tamanho_y==None):
-        tamanho_y=tamanho_array//tamanho_x
-        array =array[:tamanho_array - tamanho_array%tamanho_x]
-    array_numpy=np.array(array)
-    return array_numpy.reshape(tamanho_x,tamanho_y)
+def agrupar_array(array,tamanho):
+
+    return [array[cont:cont+tamanho] for cont in range(0,len(array),tamanho)]
+
+def inverter_shape_array_2d(array):
+    return array.reshape(array.shape[1],array.shape[0])
 
 #funções series temporais
 
