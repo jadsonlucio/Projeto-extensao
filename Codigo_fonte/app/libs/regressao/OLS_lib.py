@@ -18,6 +18,21 @@ def fit_model(train_array,prev_array,**kwargs):
 
     return model_fit
 
+def get_propriedades_modelo(model_fit):
+    dict_propriedades={
+        "aic":model_fit.aic,
+        "bic":model_fit.bic,
+        "bse":model_fit.bse,
+        "r quadrado":model_fit.rsquared,
+        "mse modelo":model_fit.mse_model,
+        "mse residos":model_fit.mse_resid,
+        "mse total":model_fit.mse_total,
+        "resido":model_fit.resid,
+        "parametros":model_fit.params
+    }
+
+    return dict_propriedades
+
 def save_model(model,url_file):
     try:
         pickle.dump(model, open(url_file, 'wb'))

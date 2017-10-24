@@ -23,5 +23,7 @@ class thread(Thread):
 
 
 def criar_thread(func,**kwargs):
-    threads.append(thread(func,**kwargs))
-    threads[-1].start()
+    thread_inst=thread(func,**kwargs)
+    threads.append(thread_inst)
+    thread_inst.start()
+    return thread_inst

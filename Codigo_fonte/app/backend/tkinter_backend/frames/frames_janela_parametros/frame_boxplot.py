@@ -3,6 +3,7 @@ from ...engine import ttk
 from ...frames.frame import frame
 
 from .....processamento.series_temporais.processamento import processamento
+from .....processamento.threading import criar_thread
 
 
 class frame_boxplot(frame):
@@ -23,6 +24,11 @@ class frame_boxplot(frame):
         except Exception as e:
             print(str(e))
 
+    def run_func_aplicar(self):
+        try:
+            thread=criar_thread(self.func_aplicar)
+        except Exception as e:
+            print(str(e))
 
     def iniciar_componentes(self):
         try:
@@ -48,7 +54,7 @@ class frame_boxplot(frame):
             self.box_periodo.grid(row=0, column=1)
 
             self.botao_cancelar = tk.Button(self, text="Cancelar", command=lambda: self.janela.destroy())
-            self.botao_aplicar = tk.Button(self, text="Aplicar", command=self.func_aplicar)
+            self.botao_aplicar = tk.Button(self, text="Aplicar", command=self.run_func_aplicar)
 
             self.botao_cancelar.pack()
             self.botao_aplicar.pack()

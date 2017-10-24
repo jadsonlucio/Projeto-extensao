@@ -28,7 +28,7 @@ class frame_correlacao(frame):
             self.series_selecionadas = [serie for serie in inst_processamento.get_series_selecionadas()]
             array_series=[]
             if(len(self.series_selecionadas)<2):
-                show_info("Erro","Selecione mais de 1 serie",self.janela)
+                show_info("Erro","Selecione mais de 1 Série",self.janela)
                 self.janela.destroy()
             else:
                 for serie in self.series_selecionadas:
