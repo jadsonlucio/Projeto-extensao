@@ -1,6 +1,7 @@
 
 from .engine import filedialog
 from .engine import messagebox
+from .janelas.janela_info.janela_info import janela_info
 
 def show_info(titulo,mensagem,parent=None):
     messagebox.showinfo(titulo,mensagem,parent=parent)
@@ -10,6 +11,9 @@ def show_warning(titulo,mensagem):
 
 def show_error(titulo,mensagem):
     messagebox.showerror(titulo,mensagem)
+
+def _show_error(titulo,mensagem_principal,mensagem_secundaria,**kwargs):
+    janela_info(titulo,mensagem_principal,mensagem_secundaria,**kwargs)
 
 def askyesno(titulo,mensagem):
     valor=messagebox.askyesno(titulo,mensagem)

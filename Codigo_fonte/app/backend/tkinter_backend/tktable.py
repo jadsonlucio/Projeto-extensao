@@ -9,8 +9,8 @@ class Table(ttk.Treeview):
             self.heading("#"+str(cont_column+1),text=self.columns[cont_column])
             self.column("#"+str(cont_column+1),anchor=tk.CENTER,stretch=True,minwidth=self.column_min_width)
 
-    def __init__(self,container,columns,rows=[],baground_head_color="ligthgray",background_cel_color="gainsboro",
-                 foreground_head_color="black",foreground_cel_color="blue",font_head=("Arial",13),font_cell=("Arial",12),
+    def __init__(self,container,columns,rows=[],baground_head_color="ligthgray",background_cel_color="gray90",
+                 foreground_head_color="black",foreground_cel_color="black",font_head=("Arial",13),font_cell=("Arial",12),
                  scroll_x=True,scroll_y=True,column_min_width=150):
         self.background_head_color=baground_head_color
         self.background_cel_color=background_cel_color
@@ -49,6 +49,7 @@ class Table(ttk.Treeview):
             print("Erro")
 
         #config style
+
 
         style = ttk.Style()
         style.configure("Custom.Treeview.Heading",

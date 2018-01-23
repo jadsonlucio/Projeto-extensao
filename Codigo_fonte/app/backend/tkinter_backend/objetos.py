@@ -118,11 +118,12 @@ class aba_frame(Frame):
     instancias = []
     instancia_selecionada = None
 
-    def __init__(self, container, func_ativacao=None):
+    def __init__(self, container, func_ativacao=None,func_exclusao=None):
         Frame.__init__(self, container)
         self.abas = []
         self.current_aba = None
         self.func_ativacao = func_ativacao
+        self.func_exclusao=func_exclusao
         aba_frame.instancia_selecionada = self
 
     #função criação
@@ -145,6 +146,7 @@ class aba_frame(Frame):
 
     def excluir_aba(self, aba):
         if (len(self.abas) > 1):
+
             for cont in range(len(self.abas)):
                 if (self.abas[cont] == aba and aba == self.current_aba):
                     self.current_aba = None
@@ -152,6 +154,7 @@ class aba_frame(Frame):
                         self.selecionar_aba(self.abas[-2])
                     else:
                         self.selecionar_aba(self.abas[cont + 1])
+            self.func_exclusao(aba)
             self.dict[aba].destroy()
             self.abas.remove(aba)
             aba.destroy()
@@ -255,11 +258,8 @@ class frame_scroll(tk.Frame):
     def iniciar_componentes(self):
         self.canvas=tk.Canvas(self)
         self.canvas.pack(side=tk.LEFT,fill=tk.BOTH,expand=1)
-
-        self.scrollbary = tk.Scrollbar(self, command=self.canvas.yview)
-        self.scrollbary.config(width=self.scroll_size)
-        self.scrollbarx = tk.Scrollbar(self, command=self.canvas.xview,orient=tk.HORIZONTAL)
-        self.scrollbarx.config(width=self.scroll_size)
+        self.scrollbary = ttk.Scrollbar(self, command=self.canvas.yview)
+        self.scrollbarx = ttk.Scrollbar(self, command=self.canvas.xview,orient=tk.HORIZONTAL)
 
         self.canvas.configure(yscrollcommand=self.scrollbary.set,xscrollcommand=self.scrollbarx.set)
 
@@ -493,7 +493,7 @@ class frame_code_text(Frame):
 
     def iniciar_componentes(self):
         try:
-            self.scroll_y = tk.Scrollbar(self)
+            self.scroll_y = ttk.Scrollbar(self)
             self.scroll_y.pack(side=tk.RIGHT, fill=tk.Y)
 
             self.text = tk.Text(self)
@@ -519,7 +519,7 @@ class frame_code_result(Frame):
 
     def iniciar_componentes(self):
         try:
-            self.scroll_y = tk.Scrollbar(self)
+            self.scroll_y = ttk.Scrollbar(self)
             self.scroll_y.pack(side=tk.RIGHT, fill=tk.Y)
 
             self.text = tk.Text(self)
