@@ -32,25 +32,33 @@ class frame_estatisticas(frame):
     def save_estatisticas(self):
         try:
             url_arquivo=opendirectory()
-            self.current_estatistica.salvar_estatistica(url_arquivo)
+            if(url_arquivo!=""):
+                self.current_estatistica.salvar_estatistica(url_arquivo)
         except Exception as e:
             print(str(e))
 
     def fechar_frame(self):
         try:
             self.janela.hide_notebook_frame("Estatísticas")
+            self.janela.show_notebook_frame("Séries temporais")
         except Exception as e:
             print(str(e))
 
     def iniciar_componentes(self):
         try:
             self.var_text_serie=tk.StringVar()
-            self.text_serie_legenda=tk.Label(self,textvariable=self.var_text_serie)
-            self.text_serie_legenda.pack(fill=tk.X)
+
+
+            self.frame_div=tk.Frame(self)
+            self.frame_div.pack(fill=tk.X,expand=1)
+            self.frame_div.config(background="gainsboro")
+
+            self.text_serie_legenda=tk.Label(self.frame_div,textvariable=self.var_text_serie)
+            self.text_serie_legenda.pack(fill=tk.X,side=tk.LEFT)
             self.text_serie_legenda.config(background="gainsboro")
 
-            self.botao_fechar=ttk.Button(self,text="x",width=2,command=self.fechar_frame)
-            self.botao_fechar.pack(anchor=tk.SE)
+            self.botao_fechar=ttk.Button(self.frame_div,text="x",width=2,command=self.fechar_frame)
+            self.botao_fechar.pack(side=tk.RIGHT)
 
             self.frame_scroll=frame_scroll(self)
             self.frame_scroll.pack(fill=tk.BOTH,expand=1)

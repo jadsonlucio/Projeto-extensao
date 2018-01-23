@@ -2,6 +2,7 @@ import tkinter as tk
 from ...engine import ttk
 from ...janelas import janela_series_temporais
 from ...janelas import janela_parametros
+from ...box import _show_error
 from ...objetos import date_choice
 from ..frame import frame
 from ..frames_janela_principal.frame_grafico import frame_plot,frame_grafico
@@ -54,9 +55,11 @@ class frame_opcoes(frame):
             if(data_inicial<data_final):
                 processamento = frame_plot.instancia_selecionada.processamento
                 data_x, data_y = processamento._get_serie_data(data_inicial, data_final, index)
-                serie = processamento._criar_serie_temporal(data_x, data_y, data_inicial, data_final, 'minuto', 10,text_legenda,None,
+                periodo=processamento.pre_processamento.periodo
+                time_steps=processamento.pre_processamento.time_steps
+                serie = processamento._criar_serie_temporal(data_x, data_y, data_inicial, data_final, periodo, time_steps,text_legenda,None,
                                                             'Normal')
-                serie.plot(label=text_legenda)
+                serie.plot(label=text_legenda,plot_date=True)
         except Exception as e:
             print(str(e))
 
@@ -146,8 +149,8 @@ class frame_estatisticas(tk.LabelFrame):
 
             self.opcoes_indicadores_estatisticas = ["Regressão Linear", "Média Móvel Simples" , "Variação",
                                                     "Média Móvel Exponencial","Decomposição da Série","Boxplot"]
-            self.opcoes_indicadores_funcoes = ["Normalizar serie","Gráfico de médias","Autocorrelação", "Correlação","Histograma"]
-
+            self.opcoes_indicadores_funcoes = ["Normalizar Série","Gráfico de Médias","Autocorrelação", "Correlação","Histograma"]
+            self.opcoes_indicadoes_graficos=[]
 
             self.frame_estatistiscas = tk.Frame(self)
             self.frame_estatistiscas.pack()
@@ -200,11 +203,11 @@ class frame_estatisticas(tk.LabelFrame):
                 janela_para=janela_parametros.janela_parametros.janela_parametros(frames=None,top_level=self.janela)
                 janela_para.iniciar_componentes("DECOMPOSICAO")
 
-            if(text=="Normalizar serie"):
+            if(text=="Normalizar Série"):
                 janela_para=janela_parametros.janela_parametros.janela_parametros(frames=None,top_level=self.janela)
                 janela_para.iniciar_componentes("NORMALIZAR")
 
-            if(text=="Gráfico de médias"):
+            if(text=="Gráfico de Médias"):
                 janela_para=janela_parametros.janela_parametros.janela_parametros(frames=None,top_level=self.janela)
                 janela_para.iniciar_componentes("MEDIAS")
 

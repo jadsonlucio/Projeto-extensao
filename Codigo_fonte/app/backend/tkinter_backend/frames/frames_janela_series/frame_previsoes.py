@@ -128,7 +128,7 @@ class frame_criar_previsao(frame):
     def criar_previsao(self):
         try:
             tipo_previsao=self.tipo_previsao.get()
-            if(tipo_previsao=="Rede-neural"):
+            if(tipo_previsao=="Rede neural"):
                 prev=previsao(tipo_previsao,None,self.frame_series_treinamento.get_selected_obj(),self.frame_series_previsao.objetos,self.frame_series_previsao.get_selected_obj())
             else:
                 prev = previsao(tipo_previsao, None, self.frame_series_treinamento.get_selected_obj(),self.frame_series_previsao.get_selected_obj())
@@ -146,16 +146,16 @@ class frame_criar_previsao(frame):
 
     def iniciar_componentes(self):
         try:
-            self.text_tipo_previsao=tk.Label(self,text="Seleccione o metodo de previsão:")
+            self.text_tipo_previsao=tk.Label(self,text="Selecione o método de previsão:")
             self.text_tipo_previsao.pack(anchor=tk.NW)
 
             self.tipo_previsao=ttk.Combobox(self)
-            self.tipo_previsao["value"]=["Holt-winters Aditivo","Holt-winters Multiplicativo","Holt-winters Linear","Regressão","Rede-neural"]
+            self.tipo_previsao["value"]=["Holt-winters Aditivo","Holt-winters Multiplicativo","Holt-winters Linear","Regressão","Rede neural"]
             self.tipo_previsao['state'] = 'readonly'
             self.tipo_previsao.current(newindex=0)
             self.tipo_previsao.pack(anchor=tk.NW)
 
-            self.text_series_treinamento=tk.Label(self,text="Escolha as series de treinamento:")
+            self.text_series_treinamento=tk.Label(self,text="Escolha as séries de treinamento:")
             self.text_series_treinamento.pack(anchor=tk.NW)
 
             self.frame_series_treinamento=frame_objetos_list(self,None,self.selecionar_serie,None,85,30,3)
@@ -163,11 +163,11 @@ class frame_criar_previsao(frame):
             self.frame_series_treinamento.pack_propagate(False)
             self.frame_series_treinamento.pack()
 
-            self.botao_importar_series_treinamento=ttk.Button(self,text="Importar series selecionadas",
+            self.botao_importar_series_treinamento=ttk.Button(self,text="Importar séries selecionadas",
                                                    command=lambda:self.importar_series(self.frame_series_treinamento))
             self.botao_importar_series_treinamento.pack(anchor=tk.NE)
 
-            self.text_series_previsao = tk.Label(self, text="Escolha as series de previsao:")
+            self.text_series_previsao = tk.Label(self, text="Escolha as séries de previsao:")
             self.text_series_previsao.pack(anchor=tk.NW)
 
             self.frame_series_previsao = frame_objetos_list(self,None,self.selecionar_serie, None, 85, 30, 3)
@@ -175,7 +175,7 @@ class frame_criar_previsao(frame):
             self.frame_series_previsao.pack_propagate(False)
             self.frame_series_previsao.pack()
 
-            self.botao_importar_series_previsao = ttk.Button(self, text="Importar series selecionadas",
+            self.botao_importar_series_previsao = ttk.Button(self, text="Importar séries selecionadas",
                                                                command=lambda: self.importar_series(
                                                                    self.frame_series_previsao))
             self.botao_importar_series_previsao.pack(anchor=tk.NE)
@@ -277,6 +277,6 @@ class frame_previsao(Frame):
         try:
             index_serie_previsao=int(self.metrica.current())
             serie_prevista=self.previsao.prever_serie(index_serie_previsao,self.data_choice.get())
-            serie_prevista.plot(label=serie_prevista.text_legenda)
+            serie_prevista.plot(label=serie_prevista.text_legenda,plot_date=True)
         except Exception as e:
             print(str(e))

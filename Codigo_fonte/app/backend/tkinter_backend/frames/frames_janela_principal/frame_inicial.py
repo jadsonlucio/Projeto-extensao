@@ -73,7 +73,7 @@ class frame_inicial(frame):
             self.set_config_obj(self.frame_menu, 'state', 'normal')
             self.loadbar.hide_load()
         except Exception as e:
-            print(str(e))
+            self.carregar_database()
 
     def adicionar_database(self):
         try:
@@ -83,8 +83,7 @@ class frame_inicial(frame):
             else:
                 self.set_config_obj(self.frame_menu, 'state', 'disabled')
 
-            self.select_files = openfiles((("Planilhas ( xlsx , csv )",
-                                                     "*.xlsx;*.csv"), ("All files", "*.*")))
+            self.select_files = openfiles(self.janela,(("Planilhas ( xlsx , csv )", "*.xlsx;*.csv"), ("All files", "*.*")))
             text_var = tk.StringVar()
             bar_var = tk.DoubleVar()
             self.criar_load_bar(mode='indeterminado', text_var=text_var, bar_var=bar_var, bar_maxvalue=0)

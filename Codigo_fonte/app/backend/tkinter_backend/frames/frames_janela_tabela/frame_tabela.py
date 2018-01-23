@@ -6,10 +6,12 @@ from ...load import load_icons
 from ...frames.frame import frame
 from ...box import save_file,openfile
 from ...tktable import Table
+from ...frames.frames_janela_tabela_plot.frame_tabela_plot import frame_tabela_plot
 
 from .....processamento.tabela import criar_tabela
 from .....processamento.series_temporais.processamento import processamento
 
+import os,sys
 class frame_tabela(frame):
 
     #gets e sets objeto
@@ -41,7 +43,6 @@ class frame_tabela(frame):
 
     def __init__(self,janela,container,tabela=None):
         frame.__init__(self,janela,"frame_tabela",container)
-        self.icones = load_icons(CAMINHO_ICONS_FRAME_TABELA, ".png")
         if(tabela==None):
             self.tabela=criar_tabela()
         else:
@@ -49,34 +50,34 @@ class frame_tabela(frame):
 
     def iniciar_componentes(self):
         try:
-            self.frame_div_opcoes=tk.Frame(self)
-            self.frame_div_opcoes.pack_propagate(False)
-            self.frame_div_opcoes.config(height=30,background="whitesmoke")
-            self.frame_div_opcoes.pack(anchor=tk.NW,fill=tk.X)
-
-            self.botao_salvar_tabela=tk.Button(self.frame_div_opcoes,image=self.icones["save_2"],command=self.salvar_tabela)
+            self.icones = load_icons(CAMINHO_ICONS_FRAME_TABELA, ".png")
+            self.botao_salvar_tabela=tk.Button(self.janela.frame_div_opcoes,image=self.icones["save_2"],command=self.salvar_tabela)
             self.botao_salvar_tabela.config(relief=tk.FLAT,background="whitesmoke")
             self.botao_salvar_tabela.image=self.icones["save_2"]
             self.botao_salvar_tabela.pack(side=tk.LEFT)
 
-            self.botao_load_tabela=tk.Button(self.frame_div_opcoes,image=self.icones["open_2"],command=self.load_tabela)
+            self.botao_load_tabela=tk.Button(self.janela.frame_div_opcoes,image=self.icones["open_2"],command=self.load_tabela)
             self.botao_load_tabela.config(relief=tk.FLAT,background="whitesmoke")
             self.botao_load_tabela.image=self.icones["open_2"]
             self.botao_load_tabela.pack(side=tk.LEFT)
 
-            self.botao_desenhar_serie=tk.Button(self.frame_div_opcoes,image=self.icones["desenha_2"])
+            self.botao_desenhar_serie=tk.Button(self.janela.frame_div_opcoes,image=self.icones["desenha_2"],command=self.criar_janela_plot)
             self.botao_desenhar_serie.config(relief=tk.FLAT,background="whitesmoke")
             self.botao_desenhar_serie.image=self.icones["desenha_2"]
-            self.botao_desenhar_serie.pack(side=tk.LEFT)
+            #self.botao_desenhar_serie.pack(side=tk.LEFT)
 
             data_tabela=self.get_tabela_data(index_plan=0)
             self.frame_tabela=Table(self,data_tabela[0])
-            self.frame_tabela.place(x=0,y=30,relwidth=1,relheight=1,width=-25,height=-32)
+            self.frame_tabela.place(x=0,y=0,relwidth=1,relheight=1,width=-25,height=-32)
             self.frame_tabela.set_data(data_tabela[1:])
 
             self.config(background=self.frame_tabela.background_cel_color)
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(exc_type, fname, exc_tb.tb_lineno)
             print(str(e))
+            return str(e)
 
     def salvar_tabela(self):
         try:
@@ -95,5 +96,15 @@ class frame_tabela(frame):
                 self.tabela.load_tabela(url_file,ready_only,data_only)
                 self.set_frame_tabela_data()
                 self.set_title_janale(url_file)
+        except Exception as e:
+            print(str(e))
+
+    def criar_janela_plot(self):
+        try:
+            self.janela_tabela_plot=frame_tabela_plot(self.janela,self.janela.frame_janela_opcoes,self)
+            self.janela_tabela_plot.config(width=300,height=300)
+            self.janela_tabela_plot.pack_propagate(False)
+            self.janela_tabela_plot.iniciar_componentes()
+            self.janela_tabela_plot.pack()
         except Exception as e:
             print(str(e))

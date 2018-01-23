@@ -30,7 +30,7 @@ class frame_medias(frame):
         try:
             self.limpar_objeto(self.frame_params_tipo_localidade)
             if(self.box_tipo_localidade.get()=="Percentil"):
-                self.label_porcentagem=tk.Label(self.frame_params_tipo_localidade,text="Porcentagem:")
+                self.label_porcentagem=tk.Label(self.frame_params_tipo_localidade,text="Porcentagem(0-100):")
                 self.label_porcentagem.pack()
                 self.text_porcentagem=tk.Entry(self.frame_params_tipo_localidade)
                 self.text_porcentagem.pack()
@@ -39,7 +39,7 @@ class frame_medias(frame):
 
     def iniciar_componentes(self):
         try:
-            self.label_tipo_localidade=tk.Label(self,text="Digite o método de localidade")
+            self.label_tipo_localidade=tk.Label(self,text="Escolha a medida de posição")
             self.label_tipo_localidade.pack()
             self.box_tipo_localidade=ttk.Combobox(self)
             self.box_tipo_localidade["value"]=["Média","Médiana","Percentil"]
@@ -55,7 +55,7 @@ class frame_medias(frame):
             self.frame_params_periodo=tk.Frame(self)
             self.frame_params_periodo.pack()
 
-            self.label_periodo = tk.Label(self,text="Escolha o periodo")
+            self.label_periodo = tk.Label(self,text="Escolha o período")
             self.label_periodo.pack()
 
             self.frame_params_periodo=tk.Frame(self)

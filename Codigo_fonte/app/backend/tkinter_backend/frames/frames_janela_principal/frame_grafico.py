@@ -49,6 +49,13 @@ class frame_grafico(frame):
         except Exception as e:
             print(str(e))
 
+    def excluir_grafico(self,frame_aba):
+        try:
+            frame_graph = self.frames[frame_aba]
+            processamento.excluir_instancia(frame_graph.processamento)
+        except Exception as e:
+            print(str(e))
+
     def mudar_tempo_grafico(self,periodo,time_steps,text_time):
         frame_plot_selecionado=frame_plot.get_current_instacia()
         series_selecionadas=frame_plot_selecionado.processamento.get_series_selecionadas()
@@ -82,7 +89,7 @@ class frame_grafico(frame):
                 botao=tk.Button(self.div1,text=text,command=lambda periodo=array[0],time_steps=array[1],text_time=text :self.mudar_tempo_grafico(periodo,time_steps,text_time))
                 botao.pack(side=tk.RIGHT)
 
-            self.frame_abas = aba_frame(self, self.selecionar_grafico)
+            self.frame_abas = aba_frame(self, self.selecionar_grafico,self.excluir_grafico)
             self.frame_abas.pack(anchor=tk.W)
 
             self.botao_add_aba = tk.Button(self.frame_abas, text="+", command=self.criar_grafico)
@@ -298,7 +305,7 @@ class frame_plot(frame):
 
     # funcões de plotagem
 
-    def plot_normal(self, data_x, data_y, x_label, y_label, index_axes=-1, **kwargs):
+    def plot_normal(self, data_x, data_y, x_label, y_label, index_axes=-1,plot_date=True, **kwargs):
         try:
             if(self.current_plot!="Normal"):
                 self.figura.clear()
@@ -310,10 +317,13 @@ class frame_plot(frame):
                     subplot= self.figura.axes[index_axes]
             else:
                 subplot=index_axes
+            if(plot_date):
+                subplot.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m/%Y'))
             line_2d,=subplot.plot(data_x,data_y,**kwargs)
             self.subplot_selecionado.set_xlabel(x_label)
             self.subplot_selecionado.set_ylabel(y_label)
             self.current_plot="Normal"
+
             line_2d.set_picker(5)
             return line_2d,subplot
         except Exception as e:
@@ -359,6 +369,23 @@ class frame_plot(frame):
         elif(tipo_plot=="acf"):
             sm.graphics.tsa.plot_acf(data_y, ax=self.subplot_selecionado,title=titulo,lags=lags,alpha=alpha,**kwargs)
         self.current_plot="Autocorrelação"
+
+    def fill_area(self,data_x,y,z,index_subplot=None,**kwargs):
+        if (self.current_plot != "Normal"):
+            self.figura.clear()
+        if (isinstance(index_subplot, int)):
+            if (index_subplot == None):
+                subplot = self.subplot_selecionado
+            elif (index_subplot >= 0):
+                subplot = self.figura.axes[index_subplot]
+        else:
+            subplot = index_subplot
+
+
+        figura=subplot.fill_between(data_x,y,z,**kwargs)
+        self.current_plot = "Normal"
+
+        return figura,subplot
 
     #funcões eventos
 
@@ -449,7 +476,7 @@ class frame_plot(frame):
                 self.processamento.processamento_plot.move_plot_serie(serie,index_subplot=-1)
 
             menu_mover_plot=tk.Menu(menu_opcoes,tearoff=0)
-            menu_opcoes.add_cascade(label="Mever para", menu=menu_mover_plot)
+            menu_opcoes.add_cascade(label="Mover para", menu=menu_mover_plot)
 
             cont=0
             for subplot in self.subplots:

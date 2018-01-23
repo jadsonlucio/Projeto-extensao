@@ -79,8 +79,8 @@ class frame_series(frame):
             self.barra_opcoes.pack(side=tk.TOP,fill=tk.X)
 
             self.botao_add=tk.Button(self.barra_opcoes,command=self.abrir_frame_code)
-            self.botao_add.config(image=self.icones["create_obj"],relief=tk.FLAT)
-            self.botao_add.image=self.icones["create_obj"]
+            self.botao_add.config(image=self.icones["code"],relief=tk.FLAT)
+            self.botao_add.image=self.icones["code"]
             self.botao_add.pack(side=tk.LEFT)
 
             self.botao_open = tk.Button(self.barra_opcoes,command=self.abrir_series)
@@ -155,7 +155,7 @@ class frame_info_serie(frame):
     def load_serie(self,serie_temporal):
         try:
             informacoes={}
-            informacoes["Quantidade dados"] = str(len(serie_temporal.ploted_data_y))
+            informacoes["Quantidade de dados"] = str(len(serie_temporal.ploted_data_y))
             informacoes["Legenda"]=serie_temporal.text_legenda
             informacoes["Data inicial"]=str(serie_temporal.date_inicial)
             informacoes["Data final"]=str(serie_temporal.date_final)
@@ -181,9 +181,13 @@ class frame_info_serie(frame):
             self.frame_informacoes=frame_informacoes(self,2,{})
             self.frame_informacoes.place(relx=0,rely=0,relwidth=1,relheight=0.75)
 
-            self.botao_plotar_serie=tk.Button(self,text="Plotar serie",command=self.func_plotar_serie)
+            self.botao_plotar_serie=tk.Button(self,text="Plotar série",command=self.func_plotar_serie)
             self.botao_estatisticas_serie=tk.Button(self,text="Estatísticas da Série",command=self.func_estatisticas_serie)
-            self.botao_tabela_frequencia=tk.Button(self,text="Tabela frequência",command=self.func_janela_frequencia)
+            self.botao_tabela_frequencia=tk.Button(self,text="Tabela de Frequência",command=self.func_janela_frequencia)
+
+            self.botao_plotar_serie.config(background="gray30",foreground="snow",activebackground="gray30",activeforeground="snow")
+            self.botao_estatisticas_serie.config(background="gray30",foreground="snow",activebackground="gray30",activeforeground="snow")
+            self.botao_tabela_frequencia.config(background="gray30",foreground="snow",activebackground="gray30",activeforeground="snow")
 
             self.botao_plotar_serie.place(relx=0,rely=0.50,relwidth=0.5,relheight=0.25)
             self.botao_estatisticas_serie.place(relx=0.50, rely=0.50, relwidth=0.5, relheight=0.25)
@@ -212,16 +216,33 @@ class frame_info_serie(frame):
             print(str(e))
 
     def func_janela_frequencia(self):
-        histograma=self.serie_selecionada.histograma(20)
-        data_rows=[]
-        data_rows.append([key for key in histograma[0].keys()])
-        for hist in histograma:
-            data_rows.append([value for value in hist.values()])
-        janela=janela_tabela(None,self.janela.top_level)
-        janela.iniciar_componentes()
-        janela.frame_janela_tabela.tabela.criar_tabela("teste")
-        janela.frame_janela_tabela.set_tabela_data(0,data_rows)
-        janela.frame_janela_tabela.iniciar_componentes()
+        def confirmar():
+            try:
+                quant_classe=int(quantidade_classe.get())
+                histograma = self.serie_selecionada.histograma(quant_classe)
+                data_rows = []
+                data_rows.append([key for key in histograma[0].keys()])
+                for hist in histograma:
+                    data_rows.append([value for value in hist.values()])
+                janela = janela_tabela(None, self.janela.top_level)
+                janela.title("Tabela de Frequência")
+                janela.maximize()
+                janela.iniciar_componentes()
+                janela.frame_janela_tabela.tabela.criar_tabela("tabela")
+                janela.frame_janela_tabela.set_tabela_data(0, data_rows)
+                janela.frame_janela_tabela.iniciar_componentes()
+                frame_frequencia.destroy()
+            except:
+                pass
+
+        frame_frequencia=tk.Frame(self)
+        frame_frequencia.place(relx=0.5,rely=0.75,relwidth=0.5, relheight=0.25)
+        quantidade_classe_text=tk.Label(frame_frequencia,text="Quantidade de classe")
+        quantidade_classe_text.pack()
+        quantidade_classe=tk.Entry(frame_frequencia)
+        quantidade_classe.pack(anchor=tk.CENTER)
+        botao_confirm=tk.Button(frame_frequencia,text="Confirmar",command=confirmar)
+        botao_confirm.pack(anchor=tk.SE,side=tk.BOTTOM)
 
     def func_ir_tela_series(self):
         try:
@@ -276,8 +297,14 @@ class frame_code(frame):
         try:
             resultado=decode_code(self.frame_codigo.get_codigo())
             if(isinstance(resultado,list)):
-                self.frame_code_result.add_text_logs(str(resultado))
-            elif(isinstance(resultado,int) or isinstance(resultado,str)):
-                self.frame_code_result.add_text_logs("Ocorreu um erro ao ler:"+str(resultado))
+                if(isinstance(resultado,list)):
+                    self.frame_code_result.add_text_logs(str(resultado[0][1]))
+                else:
+                    self.frame_code_result.add_text_logs(str(resultado))
+            elif(isinstance(resultado,int)):
+                if(resultado!=0):
+                    self.frame_code_result.add_text_logs("Ocorreu um erro ao ler:"+str(resultado))
+            elif(isinstance(resultado,str)):
+                self.frame_code_result.add_text_logs(resultado)
         except Exception as e:
             print(str(e))
