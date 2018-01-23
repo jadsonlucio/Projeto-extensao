@@ -24,6 +24,7 @@ class janela_series_temporais(janela):
         self.set_config(CAMINHO_JANELA_SERIES)
         self.wm_attributes("-topmost",1)
         self.wm_attributes("-toolwindow",1)
+        self.resizable(width=False,height=False)
         self.notebook_frames={}
         self.iniciar_componentes()
 
@@ -38,7 +39,7 @@ class janela_series_temporais(janela):
         try:
             if(isinstance(index,str)):
                 if (isinstance(index, str)):
-                    self.notebook.add(self.notebook_frames[index])
+                    self.notebook.select(self.notebook_frames[index])
                 else:
                     raise ValueError("Index não encontrado")
         except Exception as e:

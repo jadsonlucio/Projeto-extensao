@@ -33,11 +33,20 @@ class janela(tk.Tk):
         except Exception as e:
             pass
 
+    def maximize(self):
+        try:
+            self.wm_state('zoomed')
+        except Exception as e:
+            pass
+
     def __init__(self,top_level,frames):
         if(top_level==None):
             tk.Tk.__init__(self)
+        elif(top_level==True):
+            Toplevel.__init__(self)
         else:
-            Toplevel.__init__(self,master=top_level)
+            Toplevel.__init__(self, master=top_level)
+
         self.eventos=eventos(self)
         self.top_level=top_level
         self.frames_padrao=frames
