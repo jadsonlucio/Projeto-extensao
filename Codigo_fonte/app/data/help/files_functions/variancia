@@ -1,0 +1,5 @@
+Nome: variancia, var
+Função: Calcula a variância
+Parâmetros:
+          serie: Série de dados do tipo Array
+                             ou série temporal

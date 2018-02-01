@@ -46,13 +46,33 @@ class tabela():
         except Exception as e:
             tratamento_excessao(type_exception='Erro')
 
+    def get_column_planilha(self,index_planilha,index_column,min_row,max_row):
+        try:
+            resultado=self.copiar_planilha(index_planilha,min_col=index_column,
+                                           max_col=index_column,min_row=min_row,max_row=max_row)
+            return [valor[0] for valor in resultado]
+        except Exception as e:
+            tratamento_excessao("Erro")
+
+    def get_row_planilha(self,index_planilha,index_row,min_col,max_col):
+        try:
+            resultado=self.copiar_planilha(index_planilha,min_row=index_row,
+                                           max_row=index_row,min_col=min_col,max_col=max_col)
+            return resultado[0]
+        except Exception as e:
+            tratamento_excessao("Erro")
+
     def copiar_planilha(self, index, min_row=1, max_row=None, min_col=1, max_col=None, mode='horizontal'):
         try:
             array = []
             planilha = self.arq_tabela.worksheets[index]
             if (max_row == None):
                 max_row = planilha.max_row
+            elif(max_row>planilha.max_row):
+                max_row = planilha.max_row
             if (max_col == None):
+                max_col = planilha.max_column
+            elif(max_col>planilha.max_column):
                 max_col = planilha.max_column
             if (mode == 'horizontal'):
                 for row in planilha.iter_rows(min_row=min_row, max_row=max_row, min_col=min_col, max_col=max_col):

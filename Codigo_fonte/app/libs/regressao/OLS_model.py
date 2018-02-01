@@ -12,7 +12,33 @@ class OLS():
 
     def get_informacoes(self):
         try:
-            return OLS_lib.get_propriedades_modelo(self.model_fit)
+            self.informacoes={}
+            text_serie_treinamento=""
+            tamanho_series_treinamento=len(self.series_treinamento)
+            for cont in range(0,tamanho_series_treinamento):
+                serie=self.series_treinamento[cont]
+                if(cont<tamanho_series_treinamento-1):
+                    text_serie_treinamento=text_serie_treinamento+serie.text_legenda+","
+                else:
+                    text_serie_treinamento = text_serie_treinamento + serie.text_legenda
+            self.informacoes["Treinamento"]=text_serie_treinamento
+            self.informacoes["Previsão"]=self.serie_treinamento.text_legenda
+            dict_infos_model=OLS_lib.get_propriedades_modelo(self.model_fit)
+            for key,arg in zip(dict_infos_model.keys(),dict_infos_model.values()):
+                _key=key
+                _arg=None
+                if(isinstance(arg,float)):
+                    _arg=round(arg,4)
+                else:
+                    new_array=[]
+                    for valor in arg:
+                        valor_arredondado=round(float(valor),4)
+                        new_array.append(valor_arredondado)
+                    _arg=str(new_array)
+
+                self.informacoes[key]=_arg
+
+            return self.informacoes
         except Exception as e:
             tratamento_excessao("Erro")
 
@@ -33,8 +59,6 @@ class OLS():
 
     def fit_model(self,serie_treinamento=None,**kwargs):
             try:
-
-
                 array_series_treinamento=[serie.ploted_data_y for serie in self.series_treinamento]
                 array_serie_treinamento=serie_treinamento.ploted_data_y
                 self.model_fit=OLS_lib.fit_model(array_series_treinamento,array_serie_treinamento,**kwargs)

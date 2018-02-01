@@ -72,7 +72,5 @@ def reshape(array_x,array_y,metodo_media,tam_intervalo,repetir_valores=False,**k
         array_values_y=array_medias
         index=int(tam_intervalo/2)
         array_values_x=[array_x[index+cont] for cont in range(0,len(array_x),tam_intervalo)]
-    print(len(array_values_x))
-    print(len(array_values_y))
     return array_values_x,array_values_y
 

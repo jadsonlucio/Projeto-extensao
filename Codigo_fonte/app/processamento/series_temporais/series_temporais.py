@@ -1,5 +1,5 @@
 from ...processamento.exceptions.exception import tratamento_excessao,infoerroexception
-from ..datas import converter_periodo,criar_array_date
+from ..datas import converter_periodo,criar_array_date,formatar_array_date
 from ..arquivo import criar_arquivo,salvar_array_arquivo
 from ...libs import estatisticas
 
@@ -56,7 +56,7 @@ class serie_temporal():
         except Exception as e:
             tratamento_excessao("Erro")
 
-    def get_date_serie(self,data_ploted=True):
+    def get_date_serie(self,data_ploted=True,format_date=None):
         try:
             data_x=[]
             if(data_ploted):
@@ -67,8 +67,10 @@ class serie_temporal():
             time_steps=self.processamento.pre_processamento.time_steps
             periodo=self.processamento.pre_processamento.periodo
             self.date_array=criar_array_date(data_x,data_inicial,periodo,time_steps)
-
-            return self.date_array
+            if(format_date!=None):
+                return formatar_array_date(self.date_array,format=format_date)
+            else:
+                return self.date_array
         except Exception as e:
             tratamento_excessao("Erro")
 
@@ -128,6 +130,7 @@ class serie_temporal():
         self.processamento = processamento
 
         self.line_2d=None
+        self.fig_fill_area=None
         self.subplot=None
 
         self.is_ploted=False
@@ -140,7 +143,7 @@ class serie_temporal():
 
     # funcõs de plotagem
 
-    def plot(self, index_window=None, index_subplot=-1, plot_date=False,**kwargs):
+    def plot(self, index_window=None, index_subplot=-1, plot_date=True,**kwargs):
         try:
             self.processamento.processamento_plot.plot_serie(self,index_subplot=index_subplot,plot_date=plot_date,**kwargs)
         except Exception as e:
@@ -421,6 +424,7 @@ class serie_temporal():
             else:
                 data_x=self.data_x
                 data_y=self.data_y
+
             self.ploted_data_x,self.ploted_data_y=estatisticas.estatisticas_transf_serie.reshape(data_x,
                                                     data_y,metodo_media,tam_intervalo,repetir_valores,**kwargs)
 
@@ -456,7 +460,7 @@ class serie_temporal():
                 periodo = self.periodo
                 time_steps = self.time_steps
             if(caminho_arquivo=="" or caminho_arquivo==None):
-                raise infoerroexception("Nenhum diretorio selecionado")
+                raise infoerroexception("Nenhum diretório selecionado.")
             data_x="data_x="+str(data_x)
             data_y="data_y="+str(data_y)
             data_inicial="data_inicial="+str(self.date_inicial)
@@ -495,8 +499,14 @@ class serie_temporal():
     def __mul__(self, other):
         return self.processamento.operacoes_series.multiplicar_series(self, other)
 
+    def __pow__(self, power, modulo=None):
+        return self.processamento.operacoes_series.potencializar_serie(self,power)
+
     def __truediv__(self, other):
         return self.processamento.operacoes_series.dividir_series(self, other)
+
+    def __str__(self):
+        return self.text_legenda
 
 class serie_analize():
     def __init__(self,tipo_serie,text_legenda,data_x,data_y,processamento,serie_temporal):
@@ -525,3 +535,5 @@ class serie_analise_histograma(serie_analize):
         self.text_classes=text_classes
     def plot(self,index_window=None):
         pass
+
+

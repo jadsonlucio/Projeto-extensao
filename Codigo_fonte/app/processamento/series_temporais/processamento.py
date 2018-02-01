@@ -144,7 +144,12 @@ class processamento():
             cls.instancia_selecionada=instancia
         except Exception as e:
             tratamento_excessao("Erro")
-
+    @classmethod
+    def excluir_instancia(cls,instancia):
+        try:
+            instancias_processamento.remove(instancia)
+        except Exception as e:
+            tratamento_excessao("Erro")
 
 class processamento_plots():
 
@@ -162,7 +167,7 @@ class processamento_plots():
     def __init__(self,processamento):
         self.processamento=processamento
 
-    def plot_serie(self,serie_temporal,update_screen=True,index_subplot=-1,plot_date=False,selecionar_serie=True,label_x="",label_y="",**plot_args):
+    def plot_serie(self,serie_temporal,update_screen=True,index_subplot=-1,plot_date=True,selecionar_serie=True,label_x="",label_y="",**plot_args):
         try:
             if (serie_temporal.processamento.verificar_serie_plot(serie_temporal)):
                 if (self.processamento == serie_temporal.processamento):
@@ -179,10 +184,9 @@ class processamento_plots():
                 data_x=serie_temporal.get_date_serie()
             else:
                 data_x=serie_temporal.ploted_data_x
-
             line_2d, subplot = self.processamento.frame_plot.plot_normal(data_x,
                                                                          serie_temporal.ploted_data_y, label_x,
-                                                                         label_y, index_subplot, **plot_args)
+                                                                         label_y, index_subplot,plot_date, **plot_args)
             serie_temporal.line_2d = line_2d
             serie_temporal.subplot = subplot
             serie_temporal.is_ploted = True
@@ -193,6 +197,7 @@ class processamento_plots():
                 self.selecionar_serie(serie_temporal,update_screen=False)
             if(update_screen==True):
                 self.processamento.frame_plot.update_screen()
+
         except Exception as e:
             tratamento_excessao("Erro")
 
@@ -219,11 +224,23 @@ class processamento_plots():
             self.processamento.frame_plot.update_screen()
 
     def plot_histograma(self,serie_temporal,quantidade_classes,normalizar_dados=False,update_screen=True,**plot_args):
-        text_label="Histograma "+serie_temporal.text_legenda
+        text_label="Histograma - "+serie_temporal.text_legenda
         self.processamento.frame_plot.plot_histograma(serie_temporal.ploted_data_y,quantidade_classes,normalizar_dados,label=text_label)
         if (update_screen == True):
             self.processamento.frame_plot.update_screen()
 
+    def plot_area(self,serie_temporal,divisor,index_subplot=None,update_screen=True,**plot_kwargs):
+        if(index_subplot==None and serie_temporal.subplot!=None):
+            index_subplot=serie_temporal.subplot
+        data_x=serie_temporal.get_date_serie(serie_temporal.is_ploted)
+        data_y=estatisticas.converter_array_to_numpy(serie_temporal.data_y)
+        figura,subplot=self.processamento.frame_plot.fill_area(data_x,data_y,divisor,index_subplot,**plot_kwargs)
+
+        serie_temporal.fig_fill_area=figura
+        if (update_screen == True):
+            self.processamento.frame_plot.update_screen()
+
+        return figura,subplot
 
     def excluir_plot_serie(self,serie_temporal,update_screen=True):
         try:
@@ -232,9 +249,11 @@ class processamento_plots():
                 serie_temporal.is_ploted=False
                 serie_temporal.is_select=False
                 serie_temporal.line_2d.remove()
+                if(serie_temporal.fig_fill_area!=None):
+                    serie_temporal.fig_fill_area.remove()
                 self.processamento.series_plotadas.remove(serie_temporal)
             else:
-                raise infoerroexception("A serie não esta plotada")
+                raise infoerroexception("A série não esta plotada")
             if(self.processamento.veirificar_serie_selecionada(serie_temporal)):
                 self.processamento.series_selecionadas.remove(serie_temporal)
             if(update_screen==True):
@@ -299,6 +318,14 @@ class processamento_plots():
         except Exception as e:
             tratamento_excessao("Erro")
 
+kwargs_operacoes={
+    "soma":"+",
+    "subtração":"-",
+    "multiplicação":"*",
+    "divisão":"/",
+    "potenciação":"^"
+}
+
 class operacoes_series():
 
     def __init__(self,processamento):
@@ -313,6 +340,9 @@ class operacoes_series():
                 datay_serie_y = [serie_y for cont in range(0,len(datay_serie_x))]
             else:
                 raise infoerroexception("Tipos de dados imcompativeis")
+            new_obj=estatisticas.Dimencionar_arrays([datay_serie_x,datay_serie_y])
+            datay_serie_x=new_obj[0]
+            datay_serie_y=new_obj[1]
             if(len(datay_serie_x)==len(datay_serie_y)):
                 resultado=[]
                 for valor_1,valor_2 in zip(datay_serie_x,datay_serie_y):
@@ -324,10 +354,12 @@ class operacoes_series():
                         resultado.append(valor_1 * valor_2)
                     elif(operador=="divisão" or operador=="/" ):
                         resultado.append(valor_1/valor_2)
+                    elif(operador=="potenciação" or operador=="^" ):
+                        resultado.append(pow(valor_1,valor_2))
             else:
                 raise infoerroexception("As series devem possuir o mesmo tamanho")
-            serie_final=self.processamento._criar_serie_temporal(serie_x.get_data_x(serie_x.is_ploted),resultado,serie_x.date_inicial,serie_x.date_final,
-                                       serie_x.get_periodo(serie_x.is_ploted),serie_x.get_time_steps(serie_x.is_ploted),"Soma")
+            serie_final=self.processamento._criar_serie_temporal(serie_x.get_data_x(serie_x.is_ploted)[:len(datay_serie_x)],resultado,serie_x.date_inicial,serie_x.date_final,
+                                       serie_x.get_periodo(serie_x.is_ploted),serie_x.get_time_steps(serie_x.is_ploted),str(serie_x)+kwargs_operacoes[operador]+str(serie_y))
             return serie_final
         except infoerroexception as e:
             tratamento_excessao("Info")
@@ -346,6 +378,9 @@ class operacoes_series():
     def dividir_series(self,serie_x,serie_y,**kwargs):
         return self.operacao_series(serie_x,serie_y,operador="divisão")
 
+    def potencializar_serie(self,serie_x,power,**kwargs):
+        return self.operacao_series(serie_x,power,operador="potenciação")
+
     #funções de criação de series trasformadas
 
     def regressao_linear(self,serie_temporal,plot=True):
@@ -353,7 +388,7 @@ class operacoes_series():
             data_x,data_y=serie_temporal.regressao_linear(serie_temporal.is_ploted)
             new_serie_temporal=self.processamento._criar_serie_temporal(data_x,data_y,serie_temporal.date_inicial,
                                serie_temporal.date_final,serie_temporal.ploted_periodo,serie_temporal.ploted_time_steps,
-                                "Regressão Linear:"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
+                                "RL:"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
             if(plot):
                 new_serie_temporal.plot(label="RL:"+serie_temporal.text_legenda)
             return new_serie_temporal
@@ -366,7 +401,7 @@ class operacoes_series():
             data_x,data_y=serie_temporal.media_movel_simples(lag,serie_temporal.is_ploted)
             new_serie_temporal=self.processamento._criar_serie_temporal(data_x,data_y,serie_temporal.date_inicial,
                                serie_temporal.date_final,serie_temporal.ploted_periodo,serie_temporal.ploted_time_steps,
-                                "Média Móvel:"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
+                                "MMS:"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
             if(plot):
                 new_serie_temporal.plot(label="MMS:"+serie_temporal.text_legenda)
             return new_serie_temporal
@@ -378,7 +413,7 @@ class operacoes_series():
             data_x,data_y=serie_temporal.media_movel_exponencial(const_regularizacao,serie_temporal.is_ploted)
             new_serie_temporal=self.processamento._criar_serie_temporal(data_x,data_y,serie_temporal.date_inicial,
                                serie_temporal.date_final,serie_temporal.ploted_periodo,serie_temporal.ploted_time_steps,
-                                "Média Móvel:"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
+                                "MME:"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
             if(plot):
                 new_serie_temporal.plot(label="MME:"+serie_temporal.text_legenda)
             return new_serie_temporal
@@ -390,9 +425,9 @@ class operacoes_series():
             data_x,data_y=serie_temporal.variacao(serie_temporal.is_ploted)
             new_serie_temporal=self.processamento._criar_serie_temporal(data_x,data_y,serie_temporal.date_inicial,
                                serie_temporal.date_final,serie_temporal.ploted_periodo,serie_temporal.ploted_time_steps,
-                                "Variação:"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
+                                "VA:"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
             if(plot):
-                new_serie_temporal.plot(label="VR:"+serie_temporal.text_legenda)
+                new_serie_temporal.plot(label="VA:"+serie_temporal.text_legenda)
             return new_serie_temporal
         except Exception as e:
             tratamento_excessao("Erro")
@@ -408,14 +443,14 @@ class operacoes_series():
             if(metrica==1 or metrica=="Sazonalidade"):
                 metrica="sazonalidade"
                 sigla="S"
-            if(metrica==2 or metrica=="Ruido"):
+            if(metrica==2 or metrica=="Ruído"):
                 metrica="ruido"
                 sigla="R"
 
             decomposicao=serie_temporal.decomposicao(frequencia,modelo,serie_temporal.is_ploted)
             new_serie_temporal=self.processamento._criar_serie_temporal(decomposicao[metrica+"_x"],decomposicao[metrica+"_y"],
                                serie_temporal.date_inicial,serie_temporal.date_final,serie_temporal.ploted_periodo,serie_temporal.ploted_time_steps,
-                                                                    metrica+":"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
+                                                                    sigla+":"+serie_temporal.text_legenda,pai=serie_temporal,tipo_serie="Normal")
             if(plot):
                 new_serie_temporal.plot(label=sigla+":"+serie_temporal.text_legenda)
             return new_serie_temporal
@@ -430,3 +465,12 @@ def get_time_series(index_janela=None):
     except Exception as e:
         tratamento_excessao("Erro")
 
+
+def criar_serie_temporal(data_y,legenda,data_inicial,time_steps,periodo):
+    try:
+        pass
+    except Exception as e:
+        print(str(e))
+
+def get_instancia_selecionada():
+    return processamento.instancia_selecionada

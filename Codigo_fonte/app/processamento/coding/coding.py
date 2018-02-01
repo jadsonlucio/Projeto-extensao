@@ -1,152 +1,191 @@
-from ...processamento.series_temporais.series_temporais import serie_temporal
-from .tratamento_codigo import buscar_simbolo_aritmetico,buscar_simbolo_contencao,\
-             buscar_simbolos_numericos,buscar_simbolos_series,buscar_nomes_funcoes,\
-             buscar_simbolos_separacao,buscar_simbolo_string
-from . import funcoes
-from .simbolos import SIMBOLOS_SERIES_TEMPORAIS,SIMBOLOS_ARITIMETICOS,SIMBOLOS_CONTENCAO,SIMBOLOS_FUNCOES,SIMBOLOS_SEPARACAO
+from . import tratamento_codigo
+from .simbolos import SIMBOLOS_SERIES_TEMPORAIS, SIMBOLOS_ARITIMETICOS, SIMBOLOS_CONTENCAO, SIMBOLOS_FUNCOES, \
+    SIMBOLOS_SEPARACAO
+import sys, os
 
-dirt_variaveis={}
+dirt_variaveis = {}
 
-def run_code(array_objetos,array_tipos):
+
+def run_code(array_objetos):
     try:
-        if(len(array_objetos)!=len(array_tipos)):
-            return "Um erro inesperado aconteceu"
-        while (len(array_objetos) != 1):
-            cont=0
-            for cont in range(0,len(array_objetos)):
-                if(isinstance(array_objetos[cont],str)):
-                    if(array_objetos[cont]==")"):
-                        for cont2 in range(cont,0,-1):
-                            if(array_objetos[cont2]=="("):
-                                run_code_entre(array_objetos,cont2,cont)
+        while (True):
+            new_array_objetos = array_objetos[:]
+            array_objetos = run_all_operations(array_objetos)
+            if(not isinstance(array_objetos,list)):
+                return array_objetos
+            array_objetos = run_all_functions(array_objetos)
+            if(not isinstance(array_objetos,list)):
+                return array_objetos
+            array_objetos = run_verificacao(array_objetos)
+            if(not isinstance(array_objetos,list)):
+                return array_objetos
+            if (len(new_array_objetos) == len(array_objetos)):
+                break;
+        return array_objetos
 
     except Exception as e:
-        print(str(e))
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
 
-def run_code_entre(array_objetos,array_tipos,inicio,fim):
+
+def run_code_entre(array_objetos, array_tipos, inicio, fim):
     try:
-        objetos=array_objetos[inicio:fim]
-        objetos_tipo=array_tipos[inicio:fim]
+        objetos = array_objetos[inicio:fim]
+        objetos_tipo = array_tipos[inicio:fim]
         for simbolo in SIMBOLOS_ARITIMETICOS:
             for cont in range(len(objetos)):
-                if(objetos_tipo[cont]=="ARITMETICO" and objetos_tipo[cont-1]==""):
+                if (objetos_tipo[cont] == "ARITMETICO" and objetos_tipo[cont - 1] == ""):
                     pass
     except Exception as e:
         print(str(e))
 
 
+def run_all_operations(array_objetos):
+    for simbolo_aritimetico in SIMBOLOS_ARITIMETICOS:
+        array_objetos = run_operacoes(array_objetos, simbolo_aritimetico)
+        if(not isinstance(array_objetos,list)):
+            return array_objetos
+
+    return array_objetos
+
+def run_all_functions(array_objetos):
+    try:
+        cont_obj=0
+        while(cont_obj<len(array_objetos)):
+            if(array_objetos[cont_obj][0]=="FUNCAO"):
+                nome_funcao=array_objetos[cont_obj][1]
+                array_objetos=run_function(nome_funcao,cont_obj,array_objetos)
+                if(not isinstance(array_objetos,list)):
+                    return array_objetos
+            cont_obj=cont_obj+1
+        return array_objetos
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
+        print(str(e))
+
+def run_verificacao(array_objetos):
+    cont_obj=1
+    while(cont_obj<len(array_objetos)-1):
+        if(array_objetos[cont_obj-1][0]=="CONTENCAO" and array_objetos[cont_obj+1][0]=="CONTENCAO"):
+            array_objetos.remove(array_objetos[cont_obj+1])
+            array_objetos.remove(array_objetos[cont_obj-1])
+
+        cont_obj=cont_obj+1
+    return array_objetos
+
+def run_function(funcao_name,cont,array_objetos):
+    try:
+        args_parameters = []
+        kargs_parameters = {}
+        quant_parenteses_1 = 0
+        quant_parenteses_2 = 0
+        cont_2 = cont+1
+        while (cont_2 < len(array_objetos)):
+            if (array_objetos[cont_2][0] != "VALOR" and array_objetos[cont_2][0] != "ARRAY" and
+                        array_objetos[cont_2][0] != "KWARG" and array_objetos[cont_2][0] != "SEPARACAO"
+                and array_objetos[cont_2][0] != "STRING" and array_objetos[cont_2][0] != "CONTENCAO"):
+                break
+            if(array_objetos[cont_2][1]=="("):
+                quant_parenteses_1=quant_parenteses_1+1
+            if(array_objetos[cont_2][1]==")"):
+                quant_parenteses_2=quant_parenteses_2+1
+                if(quant_parenteses_1==quant_parenteses_2 and quant_parenteses_1==1):
+                    cont_3=cont+2
+                    while(cont_3<cont_2):
+                        if(array_objetos[cont_3][0]=="KWARG"):
+                            key=array_objetos[cont_3][1]
+                            arg=array_objetos[cont_3+1][1]
+                            kargs_parameters[key]=arg
+                            cont_3=cont_3+1
+                        elif(array_objetos[cont_3][0]!="SEPARACAO"):
+                            arg=array_objetos[cont_3][1]
+                            args_parameters.append(arg)
+                        cont_3=cont_3+1
+                    resultado=tratamento_codigo.funcoes.kwargs_funcoes[funcao_name](*args_parameters,**kargs_parameters)
+                    [array_objetos.pop(cont) for valor in range(cont, cont_3 + 1)]
+                    if(isinstance(resultado,int) and (resultado!=0 or resultado!=1)):
+                        return resultado
+                    elif(isinstance(resultado,str)):
+                        if("Erro" in resultado):
+                            return resultado
+                    elif(isinstance(resultado,list)):
+                        array_objetos.insert(cont, resultado)
+                    elif(resultado==None):
+                        return "Erro, ao execultar a função:"+funcao_name
+            cont_2=cont_2+1
+
+        return array_objetos
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
+        return str(e)
+
+
+def run_operacoes(array_objetos, tipo_operacao):
+    try:
+        cont_obj=1
+        while (cont_obj < len(array_objetos)-1):
+            if (array_objetos[cont_obj-1][0] == "VALOR" and array_objetos[cont_obj][1] == tipo_operacao and
+                        array_objetos[cont_obj + 1][0] == "VALOR"):
+                resultado = tratamento_codigo.funcoes.operacao_aritmetica(array_objetos[cont_obj-1][1], tipo_operacao,
+                                                        array_objetos[cont_obj + 1][1])
+
+                array_objetos.pop(cont_obj+1)
+                array_objetos.pop(cont_obj)
+                if(isinstance(resultado,str)):
+                    return resultado
+                else:
+                    array_objetos[cont_obj-1] = ["VALOR", resultado]
+                break
+            cont_obj = cont_obj + 1
+        return array_objetos
+
+    except Exception as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
+        print(str(e))
+
+
 def decode_code(string):
     try:
-        variavel=None
-        array_objetos=None
-        if("=" in string):
-            variavel,string=string.split("=")
-        codigo_tratado=tratar_codigo(string)
-        if(len(codigo_tratado)!=0):
-            array_objetos=sintaxe_analise(codigo_tratado)
+        variavel = None
+        array_objetos = []
+        codigo_tratado = tratamento_codigo.pre_tratamento_codigo(string)
+        cont=0
+        for char in codigo_tratado:
+            if(char=="(" or char==")"):
+                break
+            elif(char=="="):
+                variavel=codigo_tratado[:cont]
+                codigo_tratado=codigo_tratado[cont+1:]
+            cont=cont+1
+
+        if (len(codigo_tratado) != 0):
+            array_objetos = tratamento_codigo.sintaxe_analise(codigo_tratado,array_objetos)
         else:
             return "Nenhum texto digitado"
         if(isinstance(array_objetos,list)):
-            tratar_objetos(array_objetos)
+            array_objetos=tratamento_codigo.tratar_objetos(array_objetos)
         else:
             return array_objetos
-        return array_objetos
-    except Exception as e:
-        return 0
-
-def buscar_variaveis(string,cont,array_objetos):
-    try:
-        soma_cont = 0
-        for key in dirt_variaveis.keys():
-            if(string[cont:len(key)]==key):
-                array_objetos.append(dirt_variaveis[key])
-                soma_cont=soma_cont+len(key)
-                break;
-        cont=cont+soma_cont
-        return cont,array_objetos
-    except Exception as e:
-        print("buscar_variaveis")
-
-def sintaxe_analise(string):
-    try:
-        array_objetos=[]
-        array_funcoes_procura=[buscar_simbolo_aritmetico,buscar_simbolo_contencao,
-                               buscar_simbolos_series,buscar_simbolos_numericos,
-                               buscar_nomes_funcoes,buscar_variaveis,buscar_simbolos_separacao,
-                               buscar_simbolo_string]
-        achou_erro=False
-        cont=0
-        while(cont<len(string)):
-            valor_erro=len(array_objetos)
-            for func_procura in array_funcoes_procura:
-                cont,array_objetos=func_procura(string,cont,array_objetos)
-                if(cont>=len(string)):
-                    break;
-            if(len(array_objetos)==valor_erro):
-                achou_erro=True
-                break;
-        if(achou_erro):
-            return cont
+        if(isinstance(array_objetos,list)):
+            print(array_objetos)
+            resultado=run_code(array_objetos)
+            if(variavel==None):
+                variavel="resultado"
+            tratamento_codigo.dirt_variaveis[variavel]=resultado[0]
         else:
             return array_objetos
+        return resultado
     except Exception as e:
         return 0
 
-def semantica_analise(array_objetos):
-    try:
-        cont=0
-        array_resultados=[]
-        cont_1=0
-        cont_2=0
-        for obj in array_objetos:
-            if(isinstance(obj,str)):
-                if(obj=="("):
-                    cont_1=cont_1+1
-                if(obj==")"):
-                    cont_2=cont_2+1
-        if(cont_1!=cont_2):
-            return "Numero parênteses incorreto"
 
 
-        return array_objetos
-    except Exception as e:
-        print("semantica_analise")
 
 
-def tratar_codigo(string):
-    try:
-        new_code=""
-        for char in string:
-            if(char!=' ' or char != '\n'):
-                new_code=new_code+char
-        return new_code[:-1]
-    except Exception as e:
-        return 0
-
-def tratar_objetos(array_objetos):
-    try:
-        for cont_objetos in range(0,len(array_objetos)):
-            if(array_objetos[cont_objetos][0]=="ARRAY"):
-                tratar_array(array_objetos[cont_objetos][1])
-    except Exception as e:
-        return 0
-
-def tratar_array(array):
-    try:
-        for obj in array:
-            if(obj[0]=="ARRAY"):
-                tratar_array(obj[1])
-            elif(obj[0]=="VALOR"):
-                objeto=tratar_array_text(obj[1])
-    except Exception as e:
-        return 0
-
-def tratar_array_text(string):
-    resultado=None
-    print(string)
-    if("," in string):
-        array_string=string.split(",")
-        for text in array_string:
-            print(text)
-    else:
-        pass

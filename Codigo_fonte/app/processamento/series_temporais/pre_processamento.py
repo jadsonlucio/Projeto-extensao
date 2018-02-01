@@ -13,15 +13,15 @@ class operacoes_pre_processamento:
             index_fim = int(operacao_datas('-', self.data_inicial, data_final) / (converter_periodo(self.periodo, 'dia') * self.time_steps))
             if(index_inicio!=None and index_fim!=None):
                 serie_y = self.tabela.copiar_planilha(0, index_inicio+1, index_fim, index, index, self.orientacao_data)[0]
-                serie_x = [valor for valor in range(index_inicio, index_fim)]
-                [print("Erro") for valor in serie_y if(valor==None)]
+                serie_x = [valor+index_inicio for valor in range(0, len(serie_y)) if(serie_y[valor]!=None)]
+                serie_y = [valor for valor in serie_y if(valor!=None)]
                 return serie_x, serie_y
             else:
                 raise infoerroexception("Data inicial ou data final incorretas")
         except infoerroexception as e:
             tratamento_excessao('Info')
         except Exception as e:
-            tratamento_excessao('Erro')
+            print(str(e))
 
     def _set_parameter(self, array, tabela, orientacao_data, periodo, time_steps, data_inicial, keys_array, **kwargs):
         try:

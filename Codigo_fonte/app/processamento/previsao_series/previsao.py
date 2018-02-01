@@ -63,10 +63,10 @@ class previsao():
                 if(len(series_treinamento)==1 and len(series_previsao)>0):
                     self.model=holtwinters(tipo_previsao,series_treinamento,series_previsao,parametros_previsao)
                 elif(len(series_treinamento)==0 or len(series_previsao)==0):
-                    raise infoerroexception("Não existem series de treinamento/previsao,\n por favor as adicione para continuar")
+                    raise infoerroexception("Não existem séries de treinamento/previsão,\n por favor adicione-as para continuar")
                 elif(len(series_treinamento)>0):
-                    raise infoerroexception("Esse mmodelo não aceita mais de uma serie como treinamento,\n por favor reduza o tamanho "
-                                            "das series para uuma")
+                    raise infoerroexception("Este modelo não aceita mais de uma série como treinamento,\n por favor reduza o tamanho "
+                                            "das series para uma")
 
             elif(tipo_previsao=="Regressão"):
                 if(len(series_treinamento)==1 and len(series_previsao)>0):
@@ -74,17 +74,17 @@ class previsao():
                 elif(len(series_treinamento)==0 or len(series_previsao)==0):
                     raise infoerroexception("Não existem series de treinamento/previsao,\n por favor as adicione para continuar")
                 elif(len(series_treinamento)>1):
-                    raise infoerroexception("Esse mmodelo não aceita mais de uma serie como treinamento,\n por favor reduza o tamanho "
-                                            "das series para uuma")
+                    raise infoerroexception("Este modelo não aceita mais de uma série como treinamento,\n por favor reduza o tamanho "
+                                            "das series para uma")
 
-            elif(tipo_previsao=="Rede-neural"):
+            elif(tipo_previsao=="Rede neural"):
                 if(len(series_treinamento)>0 and serie_previsao!=None):
                     self.model=rede_neural(self.series_treinamento,self.series_previsao,self.serie_previsao,self.parametros_previsao)
                 elif(len(series_treinamento)==0 or serie_previsao==None):
                     raise infoerroexception("Não existem series de treinamento/previsao,\n por favor as adicione para continuar")
                 elif(len(serie_previsao)>1):
-                    raise infoerroexception("Esse mmodelo não aceita mais de uma serie como previsao,\n por favor reduza o tamanho "
-                                            "das series para uuma")
+                    raise infoerroexception("Este modelo não aceita mais de uma série como treinamento,\n por favor reduza o tamanho "
+                                            "das series para uma")
 
             else:
                 raise infoerroexception("Tipo de previsão invalida")

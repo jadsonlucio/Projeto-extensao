@@ -80,7 +80,6 @@ class holtwinters():
                 self.serie_treinamento=serie_treinamento
             if(comprimento_sazonal==None):
                 maior_autocorrelacao,comprimento_sazonal=serie_treinamento.get_best_sazonalidade()
-                print("maior comprimento_sazonal:"+str(comprimento_sazonal))
             _,alpha,beta,gama,rmse=self.run_model(self.serie_treinamento,1,comprimento_sazonal)
             self.comprimento_sazonal=comprimento_sazonal
             self.alpha=alpha

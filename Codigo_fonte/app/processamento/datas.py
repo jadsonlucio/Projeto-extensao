@@ -1,5 +1,5 @@
 from calendar import monthrange
-from datetime import date
+from datetime import date,timedelta
 from os import path
 from dateutil.relativedelta import relativedelta
 
@@ -61,17 +61,17 @@ def month_range(mes=1, ano=2013):
 def somar_periodos(periodo, time_steps, data):
     try:
         data_fim=None
-        if (periodo == 'segundos'):
+        if (periodo == 'segundos' or periodo=="segundo"):
             data_fim = data + relativedelta(seconds=time_steps)
-        if (periodo == 'minutes' or periodo == 'minuto'):
+        if (periodo == 'minutos' or periodo == 'minuto'):
             data_fim = data + relativedelta(minutes=time_steps)
-        if (periodo == 'horas'):
+        if (periodo == 'horas' or periodo=="hora"):
             data_fim = data + relativedelta(hours=time_steps)
-        if (periodo == 'dias'):
+        if (periodo == 'dias' or periodo=="dia"):
             data_fim = data + relativedelta(days=time_steps)
-        if (periodo == 'meses'):
+        if (periodo == 'meses' or periodo=="mes"):
             data_fim = data + relativedelta(months=time_steps)
-        if (periodo == 'anos'):
+        if (periodo == 'anos' or periodo=="ano"):
             data_fim = data + relativedelta(years=time_steps)
 
         return data_fim
@@ -108,6 +108,10 @@ def converter_string_to_date(string,separador):
             dia,mes,ano=[int(valor) for valor in string.split(separador)]
             data=date(day=dia,month=mes,year=ano)
             return data
+        elif(len(string.split(separador))==2):
+            mes,ano=[int(valor) for valor in string.split(separador)]
+            data=date(day=1,month=mes,year=ano)
+            return data
         else:
             raise infoerroexception("Data invalida")
     except infoerroexception as e:
@@ -129,7 +133,16 @@ def criar_array_date(array_x,data_inicial,periodo,time_steps):
     try:
         array_date=[]
         for x_value in array_x:
-            array_date.append(somar_periodos(periodo,time_steps*x_value,data_inicial))
+            data=somar_periodos(periodo, time_steps * x_value, data_inicial)
+            array_date.append(data)
         return array_date
     except Exception as e:
         tratamento_excessao("Erro")
+
+
+def formatar_array_date(array_date,format="%d-%m-%Y %H:%M"):
+    resultado=[]
+    for date in array_date:
+        resultado.append(date.strftime(format))
+
+    return resultado

@@ -12,7 +12,6 @@ def predict(model_fit,array):
 def fit_model(train_array,prev_array,**kwargs):
     try:
         train_array.append(prev_array)
-        print(len(train_array))
         array_dimencionado=Dimencionar_arrays(train_array)
         prev_array=array_dimencionado[-1]
         train_array=inverter_shape_array_2d(array_dimencionado[:-1])
@@ -32,8 +31,7 @@ def get_propriedades_modelo(model_fit):
         "mse modelo":model_fit.mse_model,
         "mse residos":model_fit.mse_resid,
         "mse total":model_fit.mse_total,
-        "resido":model_fit.resid,
-        "parametros":model_fit.params
+        "parâmetros":model_fit.params
     }
 
     return dict_propriedades

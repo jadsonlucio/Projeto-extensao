@@ -1,12 +1,19 @@
 import numpy as np
 
-from numpy import mean,median,sqrt,var,NaN
+from numpy import mean,median,sqrt,var,NaN,ndarray,sum
 from statsmodels import api
 from . import estatisticas_transf_serie
 
 from ..processamento.exceptions.exception import tratamento_excessao,infoerroexception
 
 # Estatistica basica
+
+def tam(array_numeros):
+    try:
+        return len(array_numeros)
+    except Exception as e:
+        tratamento_excessao("Erro")
+
 def media(array_numeros):
     try:
         return mean(array_numeros)
@@ -47,7 +54,7 @@ def moda(array_numeros):
                 valores_mais_recorrentes.append(valor_array)
             if(valor_array[1]==valores_mais_recorrentes[0][1] and valor_array[0]!=valores_mais_recorrentes[0][0]):
                 valores_mais_recorrentes.append(valor_array)
-        return valores_mais_recorrentes
+        return valores_mais_recorrentes[0][0]
     except Exception as e:
         tratamento_excessao('Erro')
 
@@ -110,7 +117,6 @@ def coeficiente_de_variação(array_numeros):
         return desvio_padrao(array_numeros)/media(array_numeros)
     except Exception as e:
         tratamento_excessao("Erro")
-
 
 # Estatistica previsao
 
@@ -175,6 +181,33 @@ def Get_best_sazonality(array_numeros,tipo_correlacao="pacf",porcentagem_acuraci
         tratamento_excessao("Erro")
 
 # funcões modificar arrays
+def criar_matriz_vazia(quant_linhas,quant_columns):
+    resultado=[]
+    for cont in range(0,quant_linhas):
+        linha=[]
+        resultado.append(linha)
+        for cont_2 in range(0,quant_columns):
+            linha.append([])
+
+    return resultado
+
+def criar_matriz_array(array_list,obj_preenchimento=""):
+    quant_linhas=max([len(array) for array in array_list])
+    quant_columns=len(array_list)
+    resultado=criar_matriz_vazia(quant_linhas,quant_columns)
+
+    for cont in range(0,quant_linhas):
+        for cont_2 in range(0,quant_columns):
+            serie=array_list[cont_2]
+            if(cont<len(serie)):
+                resultado[cont][cont_2]=serie[cont]
+            else:
+                resultado[cont][cont_2] = obj_preenchimento
+
+    return resultado
+
+def converter_array_to_numpy(array):
+    return np.array(array)
 
 def Dimencionar_arrays(arrays, side="right", tamanho=None):
     if (tamanho == None):

@@ -45,7 +45,7 @@ class rede_neural():
                 self.comprimento_sazonal=comprimento_sazonal
                 self.comprimento_saida=comprimento_sazonal
                 self.geometry_camadas_intermediarias=[40]
-
+    
                 array_series_treinamento=[serie.ploted_data_y for serie in self.series_treinamento]
                 array_serie_previsao=serie_treinamento.ploted_data_y
                 self.model_fit=mlp_lib.fit(array_series_treinamento,array_serie_previsao,self.geometry_camadas_intermediarias,

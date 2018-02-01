@@ -10,7 +10,6 @@ processamento=None
 
 # Função rodar app
 def run():
-    import tkinter as tk
     global database,pre_processamento
     database=criar_instancia_database()
     pre_processamento=criar_instancia_pre_processamento()

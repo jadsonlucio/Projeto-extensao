@@ -1,10 +1,6 @@
-from __future__ import absolute_import
-
 import os
 
-
 from . import backend
-from . import data
 from . import instancias
 from . import libs
 from . import processamento

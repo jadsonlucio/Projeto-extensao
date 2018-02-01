@@ -1,6 +1,6 @@
-nome_tabela=database.xlsx
+nome_tabela=database2.xlsx
 orientacao=vertical
 periodo=minuto
 time_steps=10
 data_inicial=1/1/2013
-keys_array=Vm 10m,Vv 2m,Vv 50cm,Dv 10m,Ts 5cm,Ts10cm,Ts 20cm,Ts 30cm,Ts 60m,VW 30cm,VW 60cm,Tar 2m,T ar,UR,P
+keys_array=VV_10m_Avg,Dv_10m,VV_2m_Avg,Ts_5cm_Avg,Ts_10cm_Avg,Ts_20cm_Avg,Ts_30cm_Avg,Ts_60cm_Avg,VW_30cm_Avg,PA_uS_Avg,VW_60cm_Avg,PA_uS_2_Avg,Tar_2m_Avg,AirTC_Avg,RH,VV_50cm_Avg.Rain_mm_Tot,Rg_CMP3_Avg,PAR_PQS1_Avg

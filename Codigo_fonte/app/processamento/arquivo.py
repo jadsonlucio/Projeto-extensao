@@ -101,8 +101,9 @@ def converter_array_to_dictonary(array):
     try:
         dicionario = {}
         for line in array:
-            key, arg = str(line).split('=')
-            dicionario[str(key)] = str(arg)
+            if(line!="" or line!=''):
+                key, arg = str(line).split('=')
+                dicionario[str(key)] = str(arg)
         return dicionario
     except Exception as e:
         tratamento_excessao(type_exception='Erro')
