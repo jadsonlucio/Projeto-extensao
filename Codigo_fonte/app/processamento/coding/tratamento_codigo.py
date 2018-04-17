@@ -8,7 +8,7 @@ SIMBOLOS_FUNCOES=funcoes.kwargs_funcoes.keys()
 kargs_type=["VALOR","ARRAY","STRING"]
 valor_type=["ARITMETICO","SEPARACAO"]
 
-dirt_variaveis={}
+dirt_variaveis={"PI":['VALOR',3.14],"e":['VALOR',2.718]}
 substituicoes_padrao=[[' ',''],['\n','']]
 
 def pre_tratamento_codigo(string,array_substituicoes=substituicoes_padrao,decode="utf-8"):
@@ -95,7 +95,6 @@ def tratar_objetos(array_objetos):
                     new_array_objetos.append(["ARRAY",resultado])
             else:
                 new_array_objetos.append(array_objetos[cont_objetos])
-
         cont_objetos=0
         while(cont_objetos<len(new_array_objetos)-1):
             if(new_array_objetos[cont_objetos][0]=="ARRAY" and new_array_objetos[cont_objetos+1][0]=="VALOR"):
@@ -209,7 +208,7 @@ def buscar_simbolos_numericos(string,cont,array_objetos):
                     achou_numero=True
                     soma_cont=soma_cont+1
             if(not achou_numero):
-                break;
+                break
         if(soma_cont>0):
             array_objetos.append(["VALOR",float(string[cont:cont+soma_cont])])
 

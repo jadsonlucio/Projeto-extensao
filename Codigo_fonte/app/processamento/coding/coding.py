@@ -20,7 +20,7 @@ def run_code(array_objetos):
             if(not isinstance(array_objetos,list)):
                 return array_objetos
             if (len(new_array_objetos) == len(array_objetos)):
-                break;
+                break
         return array_objetos
 
     except Exception as e:
@@ -169,12 +169,12 @@ def decode_code(string):
             array_objetos = tratamento_codigo.sintaxe_analise(codigo_tratado,array_objetos)
         else:
             return "Nenhum texto digitado"
+
         if(isinstance(array_objetos,list)):
             array_objetos=tratamento_codigo.tratar_objetos(array_objetos)
         else:
             return array_objetos
         if(isinstance(array_objetos,list)):
-            print(array_objetos)
             resultado=run_code(array_objetos)
             if(variavel==None):
                 variavel="resultado"

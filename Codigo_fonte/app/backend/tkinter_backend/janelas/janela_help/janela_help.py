@@ -8,6 +8,7 @@ from ....constantes import CAMINHO_JANELA_HELP
 class janela_help(janela):
     def __init__(self,dirt_functions,top_level=None,frames=None):
         janela.__init__(self,top_level,frames)
+        self.resizable(0,0)
         self.set_config(CAMINHO_JANELA_HELP)
         self.iniciar_componentes(dirt_functions)
 

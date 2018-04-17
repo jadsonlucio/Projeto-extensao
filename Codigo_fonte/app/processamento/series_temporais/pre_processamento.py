@@ -49,6 +49,9 @@ class operacoes_pre_processamento:
         self.keys_array = [""]
         self.keys = {}
 
+    def __str__(self):
+        return "Periodo:"+str(self.periodo)+","+"time_steps:"+str(self.time_steps)
+
 
 def criar_instancia_pre_processamento():
     inst_pre_preocessamento=operacoes_pre_processamento()

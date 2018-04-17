@@ -10,15 +10,16 @@ funcoes_names={
     funcoes_series.media:["media","mean"],
     funcoes_series.desvio_padrao:["desvio_padrao","d_p"],
     funcoes_series.variancia:["variancia","var"],
-    funcoes_series.coeficiente_de_variação:["coef_var","coeficiente_variacao"],
+    funcoes_series.coeficiente_de_variacao:["coef_var","coeficiente_variacao"],
     funcoes_series.correlacao:["correlacao","corr"],
     funcoes_series.RMSE:["rmse","RMSE"],
-    funcoes_series.plot_serie:["plot_serie","plot"],
+    funcoes_series.plot_serie:["plot_serie","plot","desenhar"],
 
     funcoes_desenho.fill_between:["fill_serie"],
 
     funcoes_janelas.criar_tabela_series:["criar_tabela_series","criar_tabela_serie"],
-    funcoes_janelas.criar_janela_help:["help","ajuda"]
+    funcoes_janelas.criar_janela_help:["help","ajuda"],
+
 }
 
 

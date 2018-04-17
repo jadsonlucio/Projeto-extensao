@@ -153,6 +153,7 @@ class serie_temporal():
 
     def mudar_tempo_serie(self,periodo,time_steps):
         try:
+            print(self.periodo,self.time_steps)
             tempo_serie_min=converter_periodo(self.periodo,'minuto')*self.time_steps
             tempo_serie_convertida=converter_periodo(periodo,'minuto')*time_steps
             constante = int(tempo_serie_convertida / tempo_serie_min)

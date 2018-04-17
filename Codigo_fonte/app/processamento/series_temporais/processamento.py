@@ -101,12 +101,20 @@ class processamento():
 
     def _criar_serie_temporal(self, data_x, data_y, date_inicial, date_final, periodo=None,
                               time_steps=None,text_legenda=None, pai=None, tipo_serie='Normal',ignorar_save=False,**kwargs):
+
+        if(periodo==None):
+            periodo=self.pre_processamento.periodo
+        if(time_steps==None):
+            time_steps=self.pre_processamento.time_steps
+
         if (tipo_serie == 'Normal'):
             serie = serie_temporal(text_legenda,data_x, data_y, date_inicial,
                                    date_final, periodo, time_steps, self, pai=None)
         elif(tipo_serie=="Previsao"):
             serie = serie_temporal(kwargs["previsao"],text_legenda, data_x, data_y, date_inicial,
                                    date_final, periodo, time_steps, self, pai=kwargs["pai"])
+        else:
+            raise Exception("tipo de serie não encontrada")
         if(ignorar_save==False):
             self.series_temporais.append(serie)
         return serie

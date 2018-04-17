@@ -86,7 +86,7 @@ def variancia(serie=None):
     except Exception as e:
         return str(e)
 
-def coeficiente_de_variação(serie=None):
+def coeficiente_de_variacao(serie=None):
     try:
         if (isinstance(serie, list)):
             resultado = ["VALOR", estatisticas.coeficiente_de_variação(serie)]
@@ -133,8 +133,10 @@ def RMSE(serie_original,serie_prevista):
         return str(e)
 
 #Funções plot
-def plot_serie(serie=None,legenda="Série",**plot_args):
+def plot_serie(serie=None,legenda=None,**plot_args):
     try:
+        if(legenda==None):
+            legenda=serie.text_legenda
         if(isinstance(serie,processamento.serie_temporal)):
             serie.plot(label=legenda,**plot_args)
             return ["VALOR",serie]
