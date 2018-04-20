@@ -1,6 +1,6 @@
 import tkinter as tk
 from ...load import load_icons
-from ...box import openfiles,opendirectory
+from ...box import openfile,openfiles,opendirectory
 from ...frames.frame import frame,frame_container
 from ...janelas.janela_estatisticas.janela_estatisticas import janela_estatisticas
 from ...janelas.janela_tabela.janela_tabela import janela_tabela
@@ -83,6 +83,11 @@ class frame_series(frame):
             self.botao_add.image=self.icones["code"]
             self.botao_add.pack(side=tk.LEFT)
 
+            self.botao_table = tk.Button(self.barra_opcoes)
+            self.botao_table.config(image=self.icones["table"], relief=tk.FLAT)
+            self.botao_table.image = self.icones["table"]
+            self.botao_table.pack(side=tk.LEFT)
+
             self.botao_open = tk.Button(self.barra_opcoes,command=self.abrir_series)
             self.botao_open.config(image=self.icones["open"],relief=tk.FLAT)
             self.botao_open.image = self.icones["open"]
@@ -132,7 +137,6 @@ class frame_series(frame):
         try:
             filetypes=(("Series(.serie)", "*.serie;*.csv"), ("Serie temporais(.st)", "*.st*"))
             series_selecionadas=openfiles(filetypes=filetypes)
-            print()
             if(series_selecionadas!="" or series_selecionadas!=None):
                 for url_arq_serie in series_selecionadas:
                     processamento.instancia_selecionada._load_serie_temporal(url_arq_serie)
@@ -142,7 +146,7 @@ class frame_series(frame):
             print(str(e))
 
     def key_press(self,event):
-        print(event.key_char)
+        pass
 
 
 class frame_info_serie(frame):
@@ -279,6 +283,10 @@ class frame_code(frame):
             self.botao_run.image=self.icones["run_code"]
             self.botao_run.pack(side=tk.LEFT)
 
+            self.botao_formulas = tk.Button(self.div_botoes, text="FORM",image=self.icones["formulas"],command=self.load_formula)
+            self.botao_formulas.image=self.icones["formulas"]
+            self.botao_formulas.pack(side=tk.LEFT)
+
             self.frame_codigo=frame_code_text(self)
             self.frame_codigo.pack_propagate(False)
             self.frame_codigo.config(height=210)
@@ -306,5 +314,14 @@ class frame_code(frame):
                     self.frame_code_result.add_text_logs("Ocorreu um erro ao ler:"+str(resultado))
             elif(isinstance(resultado,str)):
                 self.frame_code_result.add_text_logs(resultado)
+        except Exception as e:
+            print(str(e))
+
+    def load_formula(self):
+        try:
+            file_url=openfile(self.janela,"Selecione o codigo","app/data/formulas")
+            file=open(file_url,"r")
+            text=file.read()
+            self.frame_codigo.set_code(str(text))
         except Exception as e:
             print(str(e))

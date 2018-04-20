@@ -7,6 +7,7 @@ CAMINHO_FILE_ERROS_APP="app//data//logs//log_erro.txt"
 CAMINHO_LOGS_PLANILHA="app//data//logs//logs_planilhas.txt"
 CAMINHO_HELP="app//data//help//"
 CAMINHO_HELP_FUNCTIONS_FILES="app//data//help//files_functions"
+CAMINHO_FORMULAS_FILES="app//data//formulas"
 CAMINHO_BACKUP="app//data//database//backup"
 DATABASE_NAME="database.xlsx"
 

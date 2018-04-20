@@ -26,9 +26,12 @@ def openfiles(parent=None,title="Abrir arquivo",filetypes=()):
     except Exception as e:
         print(str(e))
 
-def openfile(parent=None,title="Abrir arquivo",filetypes=()):
+def openfile(parent=None,title="Abrir arquivo",initial_dir=None,filetypes=()):
     try:
-        file_choice = filedialog.askopenfilename(parent=parent,title=title,filetypes=filetypes)
+        if(initial_dir==None):
+            file_choice = filedialog.askopenfilename(parent=parent,title=title,filetypes=filetypes)
+        else:
+            file_choice =filedialog.askopenfilename(parent=parent,title=title,initialdir=initial_dir,filetypes=filetypes)
         return file_choice
     except Exception as e:
         print(str(e))

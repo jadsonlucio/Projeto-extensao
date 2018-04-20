@@ -135,6 +135,7 @@ def RMSE(serie_original,serie_prevista):
 #Funções plot
 def plot_serie(serie=None,legenda=None,**plot_args):
     try:
+        serie.add_to_processamento()
         if(legenda==None):
             legenda=serie.text_legenda
         if(isinstance(serie,processamento.serie_temporal)):

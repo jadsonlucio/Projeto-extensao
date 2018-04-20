@@ -141,7 +141,13 @@ class serie_temporal():
                           'data_inicial':self.date_inicial,'data_final':self.date_final,'periodo'
                            :self.periodo,'time_steps':self.time_steps,'processamento':self.processamento}
 
-    # funcõs de plotagem
+    # funcões de processamento
+
+    def add_to_processamento(self):
+        if(self not in self.processamento.series_temporais):
+            self.processamento.series_temporais.append(self)
+
+    # funcões de plotagem
 
     def plot(self, index_window=None, index_subplot=-1, plot_date=True,**kwargs):
         try:
@@ -153,7 +159,6 @@ class serie_temporal():
 
     def mudar_tempo_serie(self,periodo,time_steps):
         try:
-            print(self.periodo,self.time_steps)
             tempo_serie_min=converter_periodo(self.periodo,'minuto')*self.time_steps
             tempo_serie_convertida=converter_periodo(periodo,'minuto')*time_steps
             constante = int(tempo_serie_convertida / tempo_serie_min)

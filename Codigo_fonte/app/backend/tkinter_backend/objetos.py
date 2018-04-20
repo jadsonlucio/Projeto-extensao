@@ -317,7 +317,6 @@ class frame_objetos_list(frame_scroll):
             self.objetos.append(objeto)
             self.frames_objeto[objeto]=frame_obj
             self.set_scrollregion()
-            print(len(self.objetos))
         except Exception as e:
             tratamento_excessao("Erro")
 
@@ -485,6 +484,13 @@ class frame_code_text(Frame):
         try:
             codigo=self.text.get("1.0",tk.END)
             return codigo
+        except Exception as e:
+            tratamento_excessao("Erro")
+
+    def set_code(self,text):
+        try:
+            self.text.delete(1.0, tk.END)
+            self.text.insert(1.0, text)
         except Exception as e:
             tratamento_excessao("Erro")
 

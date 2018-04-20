@@ -172,8 +172,6 @@ def Get_best_sazonality(array_numeros,tipo_correlacao="pacf",porcentagem_acuraci
                 best_correlacao=correlacao
                 best_correlacao_index=cont
             cont=cont+1
-        print("acuracia"+str(acuracia))
-        print("best_correlacao:"+str(best_correlacao)+"index:"+str(best_correlacao_index))
 
         return best_correlacao,best_correlacao_index
 
@@ -273,7 +271,6 @@ def scale_array(array,lim_inferior,lim_superior):
 
 def standardize_array(array, mean_array=None, desvio_padrao_array=None):
     try:
-        print(array)
         new_array = []
         _media = media(array)
         _desvio_padrao = desvio_padrao(array)
