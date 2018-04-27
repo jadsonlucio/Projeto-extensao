@@ -101,6 +101,7 @@ class frame_series(frame):
             series_selecionadas=self.get_series_by_type()
             self.load_series(series_selecionadas)
 
+
         except Exception as e:
             print(str(e))
 

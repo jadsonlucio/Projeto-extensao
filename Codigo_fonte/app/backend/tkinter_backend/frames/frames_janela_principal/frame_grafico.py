@@ -201,7 +201,7 @@ class frame_plot(frame):
             self.figura.subplots_adjust(bottom=0.09, top=0.95, left=0.05, right=0.96)
             self.canvas = FigureCanvasTkAgg(figure=self.figura, master=self)
             self.figura.canvas = self.canvas
-            self.canvas.show()
+            self.canvas.draw()
             self.canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
             self.canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
@@ -292,7 +292,7 @@ class frame_plot(frame):
             cont_subplot += 1
 
     def update_canvas(self, *args, **kwargs):
-        self.canvas.show()
+        self.canvas.draw()
 
     def update_screen(self):
         try:

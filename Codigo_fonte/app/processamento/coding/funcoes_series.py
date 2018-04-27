@@ -26,6 +26,30 @@ def soma(serie=None):
     except Exception as e:
         return str(e)
 
+def maxima(serie=None):
+    try:
+        if(isinstance(serie,list)):
+            resultado=["VALOR",estatisticas.maximo(serie)[0]]
+        elif (isinstance(serie, processamento.serie_temporal)):
+            resultado = ["VALOR", estatisticas.maximo(serie.ploted_data_y)[0]]
+        else:
+            return "Erro: Série," + str(serie) + ", inválida."
+        return resultado
+    except Exception as e:
+        return str(e)
+
+def minima(serie=None):
+    try:
+        if(isinstance(serie,list)):
+            resultado=["VALOR",estatisticas.minimo(serie)[0]]
+        elif (isinstance(serie, processamento.serie_temporal)):
+            resultado = ["VALOR", estatisticas.minimo(serie.ploted_data_y)[0]]
+        else:
+            return "Erro: Série," + str(serie) + ", inválida."
+        return resultado
+    except Exception as e:
+        return str(e)
+
 def media(serie=None):
     try:
         if(isinstance(serie,list)):

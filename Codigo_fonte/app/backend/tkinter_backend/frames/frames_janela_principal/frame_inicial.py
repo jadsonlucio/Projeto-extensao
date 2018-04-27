@@ -28,7 +28,7 @@ class frame_inicial(frame):
                 self.frame_erro = frame(self.janela, 'frame_erro', self)
                 self.frame_erro.pack(anchor=tk.W, padx=60)
                 self.botao_criar = ttk.Button(self.frame_erro, text="Criar database",
-                                              command=lambda: self.criar_thread(self.adicionar_database))
+                                              command=lambda: criar_thread(self.adicionar_database))
                 self.botao_criar.config(image=self.icones['create'])
                 self.botao_criar.pack(side=tk.LEFT, padx=40)
                 self.label_info = ttk.Label(self.frame_erro, text="Notamos que não existe séries a serem carregadas.\n"
@@ -83,7 +83,8 @@ class frame_inicial(frame):
             else:
                 self.set_config_obj(self.frame_menu, 'state', 'disabled')
 
-            self.select_files = openfiles(self.janela,(("Planilhas ( xlsx , csv )", "*.xlsx;*.csv"), ("All files", "*.*")))
+            self.select_files = openfiles(parent=self.janela,title="selecione os arquivos",
+                                          filetypes=(("Planilhas ( xlsx , csv )", "*.xlsx;*.csv"), ("All files", "*.*")))
             text_var = tk.StringVar()
             bar_var = tk.DoubleVar()
             self.criar_load_bar(mode='indeterminado', text_var=text_var, bar_var=bar_var, bar_maxvalue=0)

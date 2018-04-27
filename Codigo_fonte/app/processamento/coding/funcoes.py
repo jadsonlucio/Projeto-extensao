@@ -8,6 +8,8 @@ funcoes_names={
     funcoes_series.soma:["sum","soma"],
     funcoes_series.mediana:["mediana","median"],
     funcoes_series.media:["media","mean"],
+    funcoes_series.maxima:["maxima","max"],
+    funcoes_series.minima:["minima","min"],
     funcoes_series.desvio_padrao:["desvio_padrao","d_p"],
     funcoes_series.variancia:["variancia","var"],
     funcoes_series.coeficiente_de_variacao:["coef_var","coeficiente_variacao"],

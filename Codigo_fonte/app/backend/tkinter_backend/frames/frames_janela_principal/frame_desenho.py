@@ -35,6 +35,7 @@ class frame_opcoes(frame):
                 self.metrica_box['values']=get_instancia("pre_processamento").keys_array
             else:
                 self.metrica_box['value']=array
+            self.metrica_box.current(newindex=0)
         except Exception as e:
             print(str(e))
 
@@ -59,6 +60,7 @@ class frame_opcoes(frame):
                 time_steps=processamento.pre_processamento.time_steps
                 serie = processamento._criar_serie_temporal(data_x, data_y, data_inicial, data_final, periodo, time_steps,text_legenda,None,
                                                             'Normal')
+
                 serie.plot(label=text_legenda,plot_date=True)
         except Exception as e:
             print(str(e))

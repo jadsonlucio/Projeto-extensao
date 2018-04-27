@@ -136,8 +136,7 @@ class database(tabela):
             self.periodo = kwargs['periodo']
             self.time_steps = int(kwargs['time_steps'])
             array_data = [int(valor) for valor in kwargs['data_inicial'].split('/')]
-            data_inicial = datas.date(day=array_data[0], month=array_data[1], year=array_data[2])
-            self.data_inicial = data_inicial
+            self.data_inicial = datas.date(day=array_data[0], month=array_data[1], year=array_data[2])
             self.keys_array = [valor for valor in kwargs['keys_array'].split(',')]
             self.set_metricas_processamento()
         except infoerroexception as e:

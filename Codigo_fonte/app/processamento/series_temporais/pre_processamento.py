@@ -9,8 +9,13 @@ class operacoes_pre_processamento:
 
     def get_simpletimeserie(self, data_inicial, data_final, index, **kwargs):
         try:
-            index_inicio = int(operacao_datas('-', self.data_inicial, data_inicial) / (converter_periodo(self.periodo, 'dia') * self.time_steps))
-            index_fim = int(operacao_datas('-', self.data_inicial, data_final) / (converter_periodo(self.periodo, 'dia') * self.time_steps))
+            quantidade_dias_inicio=operacao_datas('-', self.data_inicial, data_inicial)
+            quantidade_dias_fim=operacao_datas('-', self.data_inicial, data_final)
+            periodo_convertido=converter_periodo(self.periodo, 'dia') * self.time_steps
+
+            index_inicio = int(quantidade_dias_inicio / periodo_convertido)
+            index_fim = int(quantidade_dias_fim / periodo_convertido)
+
             if(index_inicio!=None and index_fim!=None):
                 serie_y = self.tabela.copiar_planilha(0, index_inicio+1, index_fim, index, index, self.orientacao_data)[0]
                 serie_x = [valor+index_inicio for valor in range(0, len(serie_y)) if(serie_y[valor]!=None)]
