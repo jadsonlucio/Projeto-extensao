@@ -1,5 +1,0 @@
-Nome: desvio_padrao, d_p
-Função: Calcula o desvio padrão
-Parâmetros:
-          serie: Série de dados do tipo Array
-                             ou série temporal

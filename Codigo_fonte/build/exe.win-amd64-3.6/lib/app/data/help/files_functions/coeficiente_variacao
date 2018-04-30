@@ -1,5 +1,0 @@
-Nome: coeficiente_variacao, coef_var
-Função: Calcula o coeficiente de variação
-Parâmetros:
-          serie: Série de dados do tipo Array
-                             ou série temporal

@@ -1,5 +1,0 @@
-Nome: tam, tamanho, len
-Função: Pega o tamanho de uma série
-Parâmetros:
-          serie: Série de dados do tipo Array
-                             ou série temporal
