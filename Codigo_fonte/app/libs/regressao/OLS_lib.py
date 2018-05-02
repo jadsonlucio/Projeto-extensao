@@ -1,7 +1,7 @@
 import pickle
 import statsmodels.api as sm
 
-from ..estatisticas import Dimencionar_arrays,inverter_shape_array_2d
+from .. import estatisticas
 
 def predict(model_fit,array):
     try:
@@ -12,9 +12,9 @@ def predict(model_fit,array):
 def fit_model(train_array,prev_array,**kwargs):
     try:
         train_array.append(prev_array)
-        array_dimencionado=Dimencionar_arrays(train_array)
+        array_dimencionado=estatisticas.Dimencionar_arrays(train_array)
         prev_array=array_dimencionado[-1]
-        train_array=inverter_shape_array_2d(array_dimencionado[:-1])
+        train_array=estatisticas.inverter_shape_array_2d(array_dimencionado[:-1])
         model=sm.OLS(prev_array,train_array)
         model_fit=model.fit()
 

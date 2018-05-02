@@ -1,5 +1,5 @@
 from .help.help import load_help_functions
-from ...libs.estatisticas import criar_matriz_array
+from ...libs import estatisticas
 from ...processamento.series_temporais import processamento
 
 def criar_janela_tabela(titulo="",largura=300,altura=300,maximize=True,top_level=True,frames=None):
@@ -48,7 +48,7 @@ def criar_tabela_series(series,formato_data="%d/%m/%Y %H:%M",**tabela_kwargs):
                 else:
                     return "Erro:Objeto:"+str(serie[1])+", não é do tipo série temporal"
 
-        array_final=criar_matriz_array(array_valores)
+        array_final=estatisticas.criar_matriz_array(array_valores)
 
         janela = criar_janela_tabela(**tabela_kwargs)
         janela.frame_janela_tabela.tabela.criar_tabela("tabela")

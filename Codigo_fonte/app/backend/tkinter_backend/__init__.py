@@ -1,10 +1,9 @@
-try:
-    from . import janelas
-    from . import frames
-    from . import objetos
-    from . import box
-except Exception as e:
-    print(str(e))
+
+from . import janelas
+from . import frames
+from . import objetos
+from . import box
+
 
 
 __versao__="0.1"

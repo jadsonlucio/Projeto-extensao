@@ -1,8 +1,7 @@
 import numpy as np
 
-from numpy import mean,median,sqrt,var,NaN,ndarray,sum
+from numpy import mean,median,sqrt,var
 from statsmodels import api
-from . import estatisticas_transf_serie
 
 from ..processamento.exceptions.exception import tratamento_excessao,infoerroexception
 
@@ -203,9 +202,6 @@ def criar_matriz_array(array_list,obj_preenchimento=""):
                 resultado[cont][cont_2] = obj_preenchimento
 
     return resultado
-
-def converter_array_to_numpy(array):
-    return np.array(array)
 
 def Dimencionar_arrays(arrays, side="right", tamanho=None):
     if (tamanho == None):

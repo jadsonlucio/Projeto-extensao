@@ -5,15 +5,15 @@ from cx_Freeze import setup, Executable
 
 
 
-os.environ['TCL_LIBRARY'] = r'C:\Program Files\Python36\tcl\tcl8.6'
-os.environ['TK_LIBRARY'] = r'C:\Program Files\Python36\tcl\tk8.6'
+os.environ['TCL_LIBRARY'] = r'C:\Users\pandaQ\AppData\Local\Programs\Python\Python35\tcl\tcl8.6'
+os.environ['TK_LIBRARY'] = r'C:\Users\pandaQ\AppData\Local\Programs\Python\Python35\tcl\tk8.6'
 
-packages = ['matplotlib.backends.backend_tkagg',"os","sys","ctypes","win32con"]
-addtional_mods = ['numpy.core._methods', 'numpy.lib.format','tkinter.filedialog','numpy.matlib','timeit']
+packages = ['matplotlib.backends.backend_tkagg',"os","sys","ctypes","multiprocessing","scipy"]
+addtional_mods = ['numpy.core._methods', 'numpy.lib.format','tkinter.filedialog','numpy.matlib','timeit','tkinter']
 include_files  = ['ico.ico']
 
-include_files.append(r'C:\Program Files\Python36\tcl\tcl8.6')
-include_files.append(r'C:\Program Files\Python36\tcl\tk8.6')
+include_files.append(r"C:\Users\pandaQ\AppData\Local\Programs\Python\Python35\DLLs\tcl86t.dll")
+include_files.append(r"C:\Users\pandaQ\AppData\Local\Programs\Python\Python35\DLLs\tk86t.dll")
 setup(
     name = "Extensão  2017",
     version = "0.0.1",

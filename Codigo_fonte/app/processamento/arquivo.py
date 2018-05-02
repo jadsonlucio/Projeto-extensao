@@ -9,7 +9,11 @@ from .exceptions.exception import tratamento_excessao,infoerroexception
 # Operações de arquivos
 def criar_arquivo(nome_arquivo,caminho_arquivo):
     if(not verificar_arquivo(caminho_arquivo,nome_arquivo)):
-        return open(caminho_arquivo+nome_arquivo,'w')
+        if(caminho_arquivo[-1]=="/"):
+            file=open(caminho_arquivo + nome_arquivo, 'w')
+        else:
+            file=open(caminho_arquivo+"/"+nome_arquivo,'w')
+        return file
     else:
         raise infoerroexception("Arquivo que já existe")
 

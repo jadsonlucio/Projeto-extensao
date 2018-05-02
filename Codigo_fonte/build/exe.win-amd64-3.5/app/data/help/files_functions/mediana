@@ -1,0 +1,5 @@
+Nome: mediana, median
+Função: Calcula a mediana
+Parâmetros:
+          serie: Série de dados do tipo Array
+                             ou série temporal

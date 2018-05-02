@@ -1,6 +1,6 @@
 #app
 APP_BACKEND="tkinter"
-CAMINHO_INFORMACOES_APP="app//informacoes"
+CAMINHO_INFORMACOES_APP="informacoes"
 CAMINHO_DATABASE="app//data//database//"
 CAMINHO_METRICAS_DATABASE="app//data//database//metricas.txt"
 CAMINHO_FILE_ERROS_APP="app//data//logs//log_erro.txt"

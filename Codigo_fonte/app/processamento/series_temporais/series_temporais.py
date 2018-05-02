@@ -458,13 +458,10 @@ class serie_temporal():
             if(data_ploted):
                 data_x=self.ploted_data_x
                 data_y=self.ploted_data_y
-                periodo=self.ploted_periodo
-                time_steps=self.ploted_time_steps
             else:
                 data_x = self.data_x
                 data_y = self.data_y
-                periodo = self.periodo
-                time_steps = self.time_steps
+
             if(caminho_arquivo=="" or caminho_arquivo==None):
                 raise infoerroexception("Nenhum diretório selecionado.")
             data_x="data_x="+str(data_x)

@@ -6,5 +6,4 @@ class janela_inicial(janela):
         janela.__init__(self,top_level,frames)
         self.minsize(1000,678)
         self.maximize()
-        self.iconbitmap(CAMINHO_ICON_JANELA)
         self.set_config(CAMINHO_JANELA_INICIAL)

@@ -1,7 +1,7 @@
 from ...instancias import Instancias
 from ...processamento.series_temporais import processamento
 from ...processamento.datas import converter_string_to_date,month_range,timedelta
-from ...libs.estatisticas import converter_array_to_numpy,ndarray
+from ...libs.estatisticas import np
 from . import funcoes_series,funcoes_desenho,funcoes_janelas
 funcoes_names={
     funcoes_series.tamanho:["tam","tamanho","len"],
@@ -138,9 +138,9 @@ def operacao_aritmetica(valor_1,operador,valor_2):
     try:
         resultado=None
         if(isinstance(valor_1,list)):
-            valor_1=converter_array_to_numpy(valor_1)
+            valor_1=np.array(valor_1)
         if(isinstance(valor_2,list)):
-            valor_2=converter_array_to_numpy(valor_2)
+            valor_2=np.array(valor_2)
         if(isinstance(valor_2,processamento.serie_temporal)):
             copia=valor_1
             valor_1=valor_2
@@ -155,7 +155,7 @@ def operacao_aritmetica(valor_1,operador,valor_2):
             resultado = valor_1 * valor_2
         elif(operador=="^"):
             resultado = valor_1**valor_2
-        if(isinstance(resultado,ndarray)):
+        if(isinstance(resultado,np.ndarray)):
             resultado=[valor for valor in resultado]
         return resultado
     except Exception as e:

@@ -1,0 +1,7 @@
+Nome: correlacao, corr
+Função: Calcura a correlação(-1:1) entre duas séries
+Parâmetros:
+          serie_1: Série de dados do tipo Array
+                             ou série temporal
+          serie_2: Série de dados do tipo Array
+                             ou série temporal
