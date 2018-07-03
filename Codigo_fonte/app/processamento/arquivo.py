@@ -18,6 +18,13 @@ def abrir_arquivo(file_url,encode="utf-8"):
     file = open(file_url, 'r+',encode)
     return file
 
+def deletar_conteudo_arquivo(file_url):
+    try:
+        file = open(file_url,"w")
+        file.close()
+    except Exception as e:
+        tratamento_excessao(type_exception="Erro")
+
 def deletar_arquivo(url, nome_arquivo):
     try:
         if (not nome_arquivo and not list_files(url)):

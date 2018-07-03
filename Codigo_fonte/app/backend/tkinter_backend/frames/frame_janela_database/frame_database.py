@@ -108,14 +108,14 @@ class frame_database(frame):
             arquivo.deletar_arquivo(CAMINHO_METRICAS_DATABASE,chosen_database+".txt")
 
             if(chosen_database==selected_database_name):
-                file=open(CAMINHO_SELECTED_DATABASE,"w")
-                file.close()
+                arquivo.deletar_conteudo_arquivo(CAMINHO_SELECTED_DATABASE)
 
         self.update_all_objects()
 
 
     def confirm(self):
         selected_database=self.dataset_box.get()
+        arquivo.deletar_conteudo_arquivo(CAMINHO_SELECTED_DATABASE)
         database=arquivo.abrir_arquivo(CAMINHO_SELECTED_DATABASE)
         arquivo.salvar_array_arquivo(database,[selected_database])
 
