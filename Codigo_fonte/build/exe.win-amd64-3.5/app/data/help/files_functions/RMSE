@@ -1,6 +1,0 @@
-Nome: rmse, RMSE
-Função: Calcula a raiz do erro medio entre duas
-                               séries temporais
-Parâmetros:
-          serie_original: Série temporal original
-          serie_prevista: Série temporal prevista

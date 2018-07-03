@@ -19,6 +19,8 @@ if(_BACKEND=="tkinter"):
     CAMINHO_JANELA_INFO="app//backend//tkinter_backend//janelas//janela_info//janela_info.ini"
     CAMINHO_JANELA_INICIAL="app//backend//tkinter_backend//janelas//janela_inicial//janela_inicial.ini"
     CAMINHO_JANELA_SERIES="app//backend//tkinter_backend//janelas//janela_series_temporais//janela_series_temporais.ini"
+    CAMINHO_JANELA_ADD_DATABASE="app//backend//tkinter_backend//janelas//janela_add_database//janela_add_database.ini"
+    CAMINHO_JANELA_DATABASE="app//backend//tkinter_backend//janelas//janela_database//janela_database.ini"
     CAMINHO_JANELA_ESTATISTICAS="app//backend//tkinter_backend//janelas//janela_estatisticas//janela_parametros.ini"
     CAMINHO_JANELA_PARAMETROS="app//backend//tkinter_backend//janelas//janela_parametros//janela_parametros.ini"
     CAMINHO_JANELA_TABELA="app//backend//tkinter_backend//janelas//janela_tabela//janela_tabela.ini"

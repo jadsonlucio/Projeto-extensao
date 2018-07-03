@@ -1,5 +1,0 @@
-Nome: sum, soma
-Função: Soma os valores de uma série
-Parâmetros:
-          serie: Série de dados do tipo Array
-                             ou série temporal

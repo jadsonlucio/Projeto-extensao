@@ -1,6 +1,0 @@
-Nome: ajuda, help
-Função: Mostra uma janela de ajuda
-Parâmetros:
-           titulo: Título da janela de ajuda
-           largura: Largura da janela de ajuda
-           altura: Altura da janela de ajuda

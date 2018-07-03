@@ -1,9 +1,0 @@
-Nome: criar_tabela_series, criar_tabela_serie
-Função: Cria uma tabela que mostrará a data e
-                        os dados de uma série
-Parâmetros:
-          series: Uma ou mais séries do tipo
-                              série temporal
-          titulo: Título da tabela
-          largura: Largura da janela
-          altura: Altura da janela

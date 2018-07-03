@@ -1,0 +1,6 @@
+time_steps=1
+orientacao=vertical
+data_inicial=01/01/2012
+periodo=dia
+keys_array=teste
+nome_tabela=teste.xlsx

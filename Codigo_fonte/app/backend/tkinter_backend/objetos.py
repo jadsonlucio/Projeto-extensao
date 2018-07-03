@@ -429,6 +429,8 @@ class frame_informacoes(Frame):
             for child in self.winfo_children():
                 child.destroy()
             self.frames_info.clear()
+            self.current_row=0
+            self.current_col=0
         except Exception as e:
             tratamento_excessao("Erro")
 

@@ -1,7 +1,0 @@
-Nome: plot_serie, plot
-Função: Plota uma série temporal na janela
-Parâmetros:
-          serie: Série de dados do tipo série temporal
-          legenda: Legenda da série
-          linewidth: Tamanho da linha
-          color: Cor da linha

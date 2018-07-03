@@ -1,10 +1,10 @@
 from numpy import NaN
 from openpyxl import Workbook, load_workbook
 
-from ..constantes import CAMINHO_METRICAS_DATABASE,CAMINHO_DATABASE
+from ..constantes import CAMINHO_METRICAS_DATABASE,CAMINHO_DATABASE,CAMINHO_SELECTED_DATABASE
 from ..processamento import datas
 from ..processamento import arquivo
-from ..instancias import Instancias
+from ..instancias.Instancias import get_instancia,add_instancia,instancias
 from .exceptions.exception import tratamento_excessao,infoerroexception
 
 array_tabelas=[]
@@ -125,10 +125,6 @@ class database(tabela):
         try:
             if (type == 'file'):
                 kwargs = arquivo.ler_arquivo_metricas(kwargs['url'])
-            elif(type==None):
-                kwargs = arquivo.ler_arquivo_metricas(CAMINHO_METRICAS_DATABASE)
-            elif (type == 'kwargs'):
-                pass
             else:
                 raise infoerroexception('opção invalida')
             self.nome_tabela = kwargs['nome_tabela']
@@ -145,7 +141,7 @@ class database(tabela):
             tratamento_excessao(type_exception='Erro')
 
     def set_metricas_processamento(self):
-        Instancias.get_instancia('pre_processamento')._set_parameter(None, self, self.orientacao, self.periodo, self.time_steps, self.data_inicial,
+        get_instancia('pre_processamento')._set_parameter(None, self, self.orientacao, self.periodo, self.time_steps, self.data_inicial,
                                 self.keys_array)
 
     def __init__(self, orientacao_data, periodo, time_steps, data_inicial, keys_array):
@@ -160,16 +156,28 @@ class database(tabela):
     #funções de operação com arquivos
 
     def verificar_arquivo(self):
-        return arquivo.verificar_arquivo(CAMINHO_DATABASE, self.nome_tabela)
+        file=arquivo.abrir_arquivo(CAMINHO_SELECTED_DATABASE)
+        array_file=arquivo.ler_array_arquivo(file)
+        if(len(array_file)==1):
+            return True
+        else:
+            return False
 
-    def carregar_database(self, open_file=False, file_url=None):
+    def carregar_database(self):
         try:
-            if (self.verificar_arquivo() and not open_file):
-                self.load_tabela(CAMINHO_DATABASE + self.nome_tabela)
-            elif (open_file):
-                self.load_tabela(file_url)
-            else:
-                raise FileNotFoundError("Arquivo nao escontrado")
+            file=arquivo.abrir_arquivo(CAMINHO_SELECTED_DATABASE)
+            array_file=arquivo.ler_array_arquivo(file)
+            nome_planilha=array_file[0]
+
+            planilha_url=CAMINHO_DATABASE+"//"+nome_planilha
+            metricas_url=CAMINHO_METRICAS_DATABASE+"//"+nome_planilha+".txt"
+
+            self.load_tabela(planilha_url)
+            self.set_metricas(type="file",url=metricas_url)
+
+            if("frame_opcoes" in instancias.keys()):
+                frame_opcoes=get_instancia("frame_opcoes")
+                frame_opcoes.set_value_metricabox()
         except Exception as e:
             tratamento_excessao(type_exception='Erro')
 
@@ -202,4 +210,4 @@ def criar_tabela():
 
 def criar_instancia_database():
     inst_database=database('orizontal', 'minuto', 10, datas.date(day=1, month=1, year=2013), [])
-    Instancias.add_instancia("database",inst_database)
+    add_instancia("database",inst_database)

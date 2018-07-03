@@ -1,8 +1,9 @@
 #app
 APP_BACKEND="tkinter"
 CAMINHO_INFORMACOES_APP="informacoes"
-CAMINHO_DATABASE="app//data//database//"
-CAMINHO_METRICAS_DATABASE="app//data//database//metricas.txt"
+CAMINHO_DATABASE="app//data//database//banco de dados"
+CAMINHO_METRICAS_DATABASE="app//data//database//metricas"
+CAMINHO_SELECTED_DATABASE="app//data//database//database.txt"
 CAMINHO_FILE_ERROS_APP="app//data//logs//log_erro.txt"
 CAMINHO_LOGS_PLANILHA="app//data//logs//logs_planilhas.txt"
 CAMINHO_HELP="app//data//help//"

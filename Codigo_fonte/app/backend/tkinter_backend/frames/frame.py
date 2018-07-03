@@ -4,6 +4,7 @@ from configparser import ConfigParser
 from ..engine import eventos
 from ..engine import objetos
 from ...constantes import CAMINHO_FRAMES_INI
+from ....instancias.Instancias import add_instancia
 
 
 class frame(tk.Frame):
@@ -26,7 +27,7 @@ class frame(tk.Frame):
                 self.set_config_obj(child, key, value)
             obj[key] = value
         except Exception as e:
-            print(str(e))
+            print(str(e)+" of "+obj.__class__.__name__)
 
     def __init__(self,janela,nome,container):
         tk.Frame.__init__(self,container)
@@ -34,6 +35,8 @@ class frame(tk.Frame):
         self.janela=janela
         self.container=container
         self.nome=nome
+
+        add_instancia(self.nome,self)
 
     def criar_load_bar(self, mode='indeterminate', text_var=None, bar_var=None, bar_maxvalue=0):
         try:

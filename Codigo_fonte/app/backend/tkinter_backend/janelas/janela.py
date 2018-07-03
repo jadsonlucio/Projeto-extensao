@@ -52,6 +52,8 @@ class janela(tk.Tk):
         self.frames_padrao=frames
         self.frames={}
 
+        self.protocol("WM_DELETE_WINDOW", self._close_window)
+
     def iniciar_componentes(self,frames=None,frames_keys=None):
         try:
             self.container = tk.Frame(self)
@@ -119,3 +121,12 @@ class janela(tk.Tk):
             self.title(self.titulo)
         except Exception as e:
             print(str(e))
+
+    #Função ativada ao fechar a jenela
+
+    def close_window(self):
+        pass
+
+    def _close_window(self):
+        self.close_window()
+        self.destroy()

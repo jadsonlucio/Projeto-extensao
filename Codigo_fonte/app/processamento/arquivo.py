@@ -1,4 +1,4 @@
-from os import listdir, remove, rmdir ,path,makedirs
+from os import listdir, remove, rmdir ,path,makedirs,path
 from shutil import copy2, rmtree
 
 from ..backend import backend_selecionado
@@ -8,14 +8,11 @@ from .exceptions.exception import tratamento_excessao,infoerroexception
 
 # Operações de arquivos
 def criar_arquivo(nome_arquivo,caminho_arquivo):
-    if(not verificar_arquivo(caminho_arquivo,nome_arquivo)):
-        if(caminho_arquivo[-1]=="/"):
-            file=open(caminho_arquivo + nome_arquivo, 'w')
-        else:
-            file=open(caminho_arquivo+"/"+nome_arquivo,'w')
-        return file
+    if(caminho_arquivo[-1]=="/"):
+        file=open(caminho_arquivo + nome_arquivo, 'w')
     else:
-        raise infoerroexception("Arquivo que já existe")
+        file=open(caminho_arquivo+"/"+nome_arquivo,'w')
+    return file
 
 def abrir_arquivo(file_url,encode="utf-8"):
     file = open(file_url, 'r+',encode)
@@ -30,7 +27,7 @@ def deletar_arquivo(url, nome_arquivo):
             if (result == 1):
                 rmtree(url)
         if (nome_arquivo):
-            remove(url + nome_arquivo)
+            remove(path.join(url,nome_arquivo))
     except Exception as e:
         tratamento_excessao(type_exception='Erro')
 
@@ -91,6 +88,7 @@ def ler_array_arquivo(arquivo):
 
 def salvar_array_arquivo(arquivo,data_array):
     try:
+
         if(isinstance(data_array,str)):
             arquivo.write(data_array.replace('[', '').replace(']', '') + '\n')
         else:

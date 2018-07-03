@@ -15,8 +15,8 @@ def show_error(titulo,mensagem):
 def _show_error(titulo,mensagem_principal,mensagem_secundaria,**kwargs):
     janela_info(titulo,mensagem_principal,mensagem_secundaria,**kwargs)
 
-def askyesno(titulo,mensagem):
-    valor=messagebox.askyesno(titulo,mensagem)
+def askyesno(titulo,mensagem,parent=None):
+    valor=messagebox.askyesno(titulo,mensagem,parent=parent)
     return valor
 
 def openfiles(parent=None,title="Abrir arquivo",filetypes=()):
