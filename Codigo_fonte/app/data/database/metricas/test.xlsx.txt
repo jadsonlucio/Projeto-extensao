@@ -1,0 +1,6 @@
+orientacao=vertical
+nome_tabela=test.xlsx
+time_steps=7
+periodo=dia
+keys_array=total_casos
+data_inicial=01/01/2013

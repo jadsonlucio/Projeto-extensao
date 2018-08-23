@@ -1,8 +1,9 @@
 import numpy as np
 
-from numpy import mean,median,sqrt,var
+from numpy import mean, median, sqrt, var
 from statsmodels import api
 
+from . import estatisticas_transf_serie
 from ..processamento.exceptions.exception import tratamento_excessao,infoerroexception
 
 # Estatistica basica

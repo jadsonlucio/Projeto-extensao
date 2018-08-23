@@ -4,7 +4,7 @@ from ...box import openfile,openfiles,opendirectory
 from ...frames.frame import frame,frame_container
 from ...janelas.janela_estatisticas.janela_estatisticas import janela_estatisticas
 from ...janelas.janela_tabela.janela_tabela import janela_tabela
-from ...objetos import frame_scroll,frame_objetos_list,frame_informacoes,frame_code_text,frame_code_result
+from ...objetos import frame_objetos_list,frame_informacoes,frame_code_text,frame_code_result
 from ....constantes import CAMINHO_ICONS_FRAME_SERIES,CAMINHO_ICONS_FRAME_CODE
 
 

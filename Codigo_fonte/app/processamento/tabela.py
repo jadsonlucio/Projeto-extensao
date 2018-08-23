@@ -1,4 +1,4 @@
-from numpy import NaN
+from numpy import NaN,transpose
 from openpyxl import Workbook, load_workbook
 
 from ..constantes import CAMINHO_METRICAS_DATABASE,CAMINHO_DATABASE,CAMINHO_SELECTED_DATABASE
@@ -23,8 +23,9 @@ class tabela():
         except Exception as e:
             tratamento_excessao(type_exception='Erro')
 
-    def load_tabela(self, url, ready_only=False, data_only=False):
+    def load_tabela(self, url, ready_only=True, data_only=False):
         try:
+            print(ready_only)
             self.arq_tabela = load_workbook(url, read_only=ready_only, data_only=data_only)
         except Exception as e:
             tratamento_excessao(type_exception='Erro')
@@ -81,12 +82,12 @@ class tabela():
                         linha.append(cell.value)
                     array.append(linha)
             if (mode == 'vertical'):
-                for row in planilha.iter_cols(min_row=min_row, max_row=max_row, min_col=min_col, max_col=max_col):
-                    linha = []
+                for row in planilha.iter_rows(min_row=min_row, max_row=max_row, min_col=min_col, max_col=max_col):
+                    col = []
                     for cell in row:
-                        linha.append(cell.value)
-                    array.append(linha)
-            return array
+                        col.append(cell.value)
+                    array.append(col)
+            return transpose(array)
         except Exception as e:
             tratamento_excessao(type_exception='Erro')
 
