@@ -84,6 +84,7 @@ class serie_temporal():
     def get_estatisticas(self):
         try:
             dirt_estatisticas={}
+            dirt_estatisticas["Soma"]=round(self.soma(self.is_ploted),2)
             dirt_estatisticas["Média"]=round(self.media(self.is_ploted),2)
             dirt_estatisticas["Mediana"]=round(self.mediana(self.is_ploted),2)
             dirt_estatisticas["Moda"]=self.moda(self.is_ploted)
@@ -184,6 +185,12 @@ class serie_temporal():
             tratamento_excessao("Erro")
 
     # funcões estatistica basica
+
+    def soma(self,data_ploted=True):
+        if(data_ploted):
+            return estatisticas.sum(self.ploted_data_y)
+        else:
+            return estatisticas.sum(self.data_y)
 
     def maximo(self,data_ploted=True):
         if(data_ploted):

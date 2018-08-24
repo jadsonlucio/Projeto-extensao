@@ -25,7 +25,6 @@ class tabela():
 
     def load_tabela(self, url, ready_only=True, data_only=False):
         try:
-            print(ready_only)
             self.arq_tabela = load_workbook(url, read_only=ready_only, data_only=data_only)
         except Exception as e:
             tratamento_excessao(type_exception='Erro')

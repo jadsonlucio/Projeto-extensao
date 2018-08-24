@@ -1,6 +1,6 @@
 import numpy as np
 
-from numpy import mean, median, sqrt, var
+from numpy import mean, median, sqrt, var, sum
 from statsmodels import api
 
 from . import estatisticas_transf_serie
