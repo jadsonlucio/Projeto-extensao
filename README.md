@@ -1,1 +1,1 @@
-ECHO est  ativado.
+Simple program to make statics analize
