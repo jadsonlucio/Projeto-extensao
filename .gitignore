@@ -1,3 +1,6 @@
 #ignore build
 build/
 build libs/
+
+#ignore pyc files
+__pycache__
