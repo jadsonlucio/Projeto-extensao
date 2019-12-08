@@ -1,7 +1,9 @@
 import warnings
 warnings.filterwarnings("ignore")
 
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 from matplotlib.pyplot import style
 
@@ -208,7 +210,7 @@ class frame_plot(frame):
             self.canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=1)
             self.canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-            toolbar = NavigationToolbar2TkAgg(self.canvas, self)
+            toolbar = NavigationToolbar2Tk(self.canvas, self)
             toolbar.update()
 
             self.grid(row=0, column=0, sticky=tk.NSEW)
