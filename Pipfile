@@ -4,6 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+statsmodels = {path = "./statsmodels-0.10.2-cp37-cp37m-win_amd64.whl"}
+matplotlib = "*"
+sklearn = "*"
+openpyxl = "*"
+cx-freeze = "*"
 
 [dev-packages]
 
