@@ -239,7 +239,7 @@ def inverter_shape_array_2d(array):
 
 #funções series temporais
 
-def decomposicao_serie(y,frequencia,modelo):
+def decomposicao_serie(y, frequencia, modelo):
     try:
         if(modelo==0):
             modelo="additive"
